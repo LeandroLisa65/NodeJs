@@ -8,7 +8,7 @@ class ProductManager
     static IdGlobal = 1;
 
     addProduct = (title, description, price, thumbnail, code, stock) => {
-        if(!this.#validateAttributes(title, description, price, thumbnail, code, stock))
+        if(this.#validateAttributes(title, description, price, thumbnail, code, stock))
             return;
 
         if(this.#validateCode(code))
@@ -49,7 +49,7 @@ class ProductManager
 
     #validateAttributes = (title, description, price, thumbnail, code, stock) => {
         let isValid = !title || !description || !price || !thumbnail || !code || !stock;      
-        if(!isValid)
+        if(isValid)
             console.log('All attributes should have a valid value')
 
         return isValid;
@@ -57,11 +57,10 @@ class ProductManager
 }
 
 let x = new ProductManager();
-
-x.addProduct('a','a',1,'B','',1);
-x.addProduct('a','a',1,'B','a',1);
-x.addProduct('a','a',1,'B','a',1);
 console.log(x.getProducts());
+x.addProduct('producto prueba','Este es un producto prueba',200,'Sin imagen','abc123',25);
+console.log(x.getProducts());
+x.addProduct('producto prueba','Este es un producto prueba',200,'Sin imagen','abc123',25);
 console.log(x.getProductById(1));
 console.log(x.getProductById(2));
 
