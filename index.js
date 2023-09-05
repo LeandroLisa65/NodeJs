@@ -35,7 +35,7 @@ class ProductManager
         if(product)
             return product;
 
-        console.log('Not Found');
+        return 'Not Found';
     }
 
     #validateCode = (code) => {
