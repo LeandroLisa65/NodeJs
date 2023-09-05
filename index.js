@@ -1,11 +1,10 @@
+let IdGlobal = 1;
 class ProductManager
 {
     constructor()
     {
         this.products = [];
     }
-
-    static IdGlobal = 1;
 
     addProduct = (title, description, price, thumbnail, code, stock) => {
         if(this.#validateAttributes(title, description, price, thumbnail, code, stock))
@@ -14,7 +13,7 @@ class ProductManager
         if(this.#validateCode(code))
             return;
 
-        const id = ProductManager.IdGlobal++;
+        const id = IdGlobal++;
         this.products.push({
             id
             , title 
@@ -62,5 +61,7 @@ x.addProduct('producto prueba','Este es un producto prueba',200,'Sin imagen','ab
 console.log(x.getProducts());
 x.addProduct('producto prueba','Este es un producto prueba',200,'Sin imagen','abc123',25);
 console.log(x.getProductById(1));
+console.log(x.getProductById(2));
+x.addProduct('producto prueba','Este es un producto prueba',200,'Sin imagen','abc1234',25);
 console.log(x.getProductById(2));
 
