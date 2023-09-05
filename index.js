@@ -1,4 +1,3 @@
-let id = 1;
 class ProductManager
 {
     constructor()
@@ -16,15 +15,15 @@ class ProductManager
             return;
 
         this.products.push({
-            id
-            , title 
+            title 
             , description
             , price
             , thumbnail
             , code
             , stock
+            , id: ProductManager.IdGlobal
         });
-        id++;
+        ProductManager.IdGlobal++;
     }
 
     getProducts = () => {
