@@ -67,5 +67,6 @@ x.addProduct('producto prueba','Este es un producto prueba',200,'Sin imagen','ab
 console.log(x.getProductById(2));
 x.addProduct('producto prueba','Este es un producto prueba',200,'Sin imagen','abc12345',25);
 x.addProduct('producto prueba','Este es un producto prueba',200,'Sin imagen','abc123456',25);
+console.log(x.getProductById(4));
 console.log(x.getProducts());
 
