@@ -26,8 +26,7 @@ class ProductManager {
     async createProduct(product){
         try {
             const products = await this.getProducts();
-            let id = ProductManager.GlobalId;
-            products.push({id,...product});
+            products.push({id: ProductManager.GlobalId ,...product});
             await fs.promises.writeFile(this.path, JSON.stringify(products));
             ProductManager.GlobalId++;
             return `Product with id ${id} CREATED`;
@@ -117,13 +116,13 @@ const product3 = {
 
 const updatedProduct = {
     id: 2,
-    title: 'titleUpdated',
-    description: 'descriptionUpdated',
+    title: 'title2Updated',
+    description: 'description2Updated',
     price: 30,
-    thumbnail: 'imageUpdated',
-    code: 'codeUpdated',
+    thumbnail: 'image2Updated',
+    code: '2',
     stock: 100,
-    newProp: 'something'
+    newProp: 'somethingElse'
 }
 
 async function test(){
