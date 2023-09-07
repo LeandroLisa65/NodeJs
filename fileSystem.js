@@ -73,4 +73,20 @@ const fs = require('fs')
     .then(()=> console.log('promise.txt eliminado'))
     .catch((e)=>console.log(e));
 
+//Promises Json
+const myJson = { 
+    "name": "Sara",
+    "age": 23,
+    "gender": "Female",
+    "department": "History",
+    "car": "Honda"
+};
+    //crear
+    fs.promises.writeFile('promise.json','holatexto')
+    .then(() => console.log('bien promise'))
+    .catch((e) => console.log(e));
 
+    //leer
+    fs.promises.readFile('promise.txt')
+    .then(()=> console.log('promise.txt leído'))
+    .catch((e)=>console.log(e));
