@@ -1,12 +1,15 @@
-const fs = require('fs');
-const path = 'Users.json';
+//const fs = require('fs');
+import { createHash } from 'crypto';
+import { readFileSync, existsSync, unlink, promises } from 'fs';
+const path = './Users.json';
 class UserManager {
 
+    static IdGlobal = 1;
     async getUsers(){
         try{
-            if(fs.existsSync(path))
+            if(existsSync(path))
             {
-                const usersFile = fs.readFileSync(path, 'utf-8')
+                const usersFile = readFileSync(path, 'utf-8')
                 return JSON.parse(usersFile);
             }
             else 
@@ -22,17 +25,9 @@ class UserManager {
     async createUser(user){
         try {
             const users = await this.getUsers();
-            let id;
-            if(!users.length)
-            {
-                id = 1;
-            }
-            else
-            {
-                id = users[users.length-1].id + 1;
-            }
-            users.push({id,...user});
-            await fs.promises.writeFile(path, JSON.stringify(users));
+            const hashPassword = createHash('sha256').update(user.password).digest('hex');
+            users.push({id: UserManager.IdGlobal++ ,...user, password: hashPassword});
+            await promises.writeFile(path, JSON.stringify(users));
         } catch (error) {
             return error;
         }
@@ -45,7 +40,7 @@ class UserManager {
             if(users.length === newArrayUsers.length)
                 return `User with id ${id} not found`;
 
-            await fs.promises.writeFile(path, JSON.stringify(newArrayUsers));
+            await promises.writeFile(path, JSON.stringify(newArrayUsers));
             return `User with id ${id} removed`
         } catch (error) {
             return error;
@@ -71,14 +66,16 @@ const user1 = {
     first_name: 'User1',
     last_name: 'User1',
     age: 33,
-    course: 'Backend'
+    course: 'Backend',
+    password: '12345'
 }
 
 const user2 = {
     first_name: 'User2',
     last_name: 'User2',
     age: 33,
-    course: 'Backend'
+    course: 'Backend',
+    password: '12345'
 }
 
 async function test(){
@@ -94,8 +91,13 @@ async function test(){
     console.log(await manager1.deleteUser(1));
     console.log(await manager1.getUsers());
 }
-fs.unlink(path, (err) => {
+
+async function remove(){
+if(existsSync(path))
+unlink(path, (err) => {
   if (err) throw err //handle your error the way you want to;
   console.log('path/file.txt was deleted');//or else the file will be deleted
     });
+}
+remove();
 test();

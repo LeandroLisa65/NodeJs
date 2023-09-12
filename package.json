@@ -1,0 +1,24 @@
+{
+  "name": "NodeJs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "UserManager.js",
+  "type": "module",
+  "scripts": {
+    "start": "node UserManager.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeandroLisa65/NodeJs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeandroLisa65/NodeJs/issues"
+  },
+  "homepage": "https://github.com/LeandroLisa65/NodeJs#readme",
+  "dependencies": {
+    "crypto": "^1.0.1"
+  }
+}
