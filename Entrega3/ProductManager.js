@@ -1,5 +1,7 @@
-import { existsSync, unlink, promises } from 'fs';
-const path = './Products.json'
+import { existsSync, promises } from 'fs';
+
+const path = './Products.json';
+
 class ProductManager {
 
     constructor(pathParam){
@@ -10,7 +12,9 @@ class ProductManager {
         try{
             if(existsSync(this.path))
             {
-                const productsFile = await promises.readFile(this.path, 'utf-8');
+                const productsFile = await promises.readFile(this.path, 'utf-8',(err) => {
+                console.log(err);
+                });
                 return JSON.parse(productsFile);
             }
             else 
@@ -26,9 +30,10 @@ class ProductManager {
     async createProduct(product){
         try {
             const products = await this.getProducts();
-            products.push({id: ProductManager.GlobalId++ ,...product});
+            const productId = ProductManager.GlobalId++
+            products.push({id: productId ,...product});
             await promises.writeFile(this.path, JSON.stringify(products));
-            return `Product with id ${id} CREATED`;
+            return `Product with id ${productId} CREATED`;
         } catch (error) {
             return error;
         }
@@ -51,7 +56,7 @@ class ProductManager {
     async getProductById(id) {
         try {
             const products = await this.getProducts();
-            const product = products.find(x => x.id === id);
+            const product = products.find(x => x.id == id);
             if(!product)
                 return `Product with id ${id} NOT FOUND`;
             return product;
@@ -124,32 +129,8 @@ const updatedProduct = {
     newProp: 'somethingElse'
 }
 
-async function test(){
-    const manager1 = new ProductManager(path);
-    console.log(await manager1.getProducts());
-    await manager1.createProduct(product1);
-    console.log(await manager1.getProducts());
-    await manager1.createProduct(product2);
-    console.log(await manager1.getProducts());
-    console.log(await manager1.getProductById(2));
-    console.log(await manager1.getProductById(3));
-    console.log(await manager1.deleteProduct(3));
-    console.log(await manager1.deleteProduct(1));
-    console.log(await manager1.getProducts());
-    await manager1.createProduct(product3);
-    console.log(await manager1.updateProduct(2, updatedProduct));
-    console.log(await manager1.getProducts());
-}
+export const manager = new ProductManager(path);
 
-async function cleaning(){
-    if(existsSync(this.path))
-        unlink(path, (err) => {
-            if (err) throw err;
-            console.log(`Deleting ${path} file`);
-            });
-}
 
-cleaning();
-test();
 
 
