@@ -42,7 +42,7 @@ class ProductManager {
     async deleteProduct(id) {
         try {
             const products = await this.getProducts();
-            const newArrayProducts = products.filter(x => x.id !== id);
+            const newArrayProducts = products.filter(x => x.id != id);
             if(products.length === newArrayProducts.length)
                 return `Product with id ${id} NOT FOUND`;
 
@@ -68,7 +68,7 @@ class ProductManager {
     async updateProduct(id, updatedProduct){
         try {
             const product = await this.getProductById(id);
-            if(typeof(product) === 'string')
+            if(typeof(product) == 'string')
                 return product;
     
             Object.keys(updatedProduct).forEach(key => {
@@ -87,46 +87,6 @@ class ProductManager {
             return error;
         }
     };
-}
-
-//PROBANDO
-
-const product1 = {
-    title: 'title1',
-    description: 'description1',
-    price: 30,
-    thumbnail: 'image1',
-    code: '1',
-    stock: 100
-}
-
-const product2 = {
-    title: 'title2',
-    description: 'description2',
-    price: 30,
-    thumbnail: 'image2',
-    code: '2',
-    stock: 100
-}
-
-const product3 = {
-    title: 'title3',
-    description: 'description3',
-    price: 30,
-    thumbnail: 'image3',
-    code: '3',
-    stock: 100
-}
-
-const updatedProduct = {
-    id: 2,
-    title: 'title2Updated',
-    description: 'description2Updated',
-    price: 30,
-    thumbnail: 'image2Updated',
-    code: '2',
-    stock: 100,
-    newProp: 'somethingElse'
 }
 
 export const manager = new ProductManager(path);
