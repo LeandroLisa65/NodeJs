@@ -4,12 +4,14 @@ const path = './Users.json';
 class UserManager {
 
     static IdGlobal = 1;
-    async getUsers(){
+    async getUsers(queryObj){
         try{
             if(existsSync(path))
             {
+                var {limit} = queryObj;
                 const usersFile = readFileSync(path, 'utf-8')
-                return JSON.parse(usersFile);
+                const userData = JSON.parse(usersFile);
+                return limit ? userData.slice(0, +limit) : userData;
             }
             else 
             {
@@ -23,7 +25,7 @@ class UserManager {
 
     async createUser(user){
         try {
-            const users = await this.getUsers();
+            const users = await this.getUsers({});
             const hashPassword = createHash('sha256').update(user.password).digest('hex');
             users.push({id: UserManager.IdGlobal++ ,...user, password: hashPassword});
             await promises.writeFile(path, JSON.stringify(users));
@@ -34,7 +36,7 @@ class UserManager {
 
     async deleteUser(id) {
         try {
-            const users = await this.getUsers();
+            const users = await this.getUsers({});
             const newArrayUsers = users.filter(x => x.id !== id);
             if(users.length === newArrayUsers.length)
                 return `User with id ${id} not found`;
@@ -48,7 +50,7 @@ class UserManager {
 
     async getUserById(id) {
         try {
-            const users = await this.getUsers();
+            const users = await this.getUsers({});
             const user = users.find(x => x.id == id);
             if(!user)
                 return 'Not Found';

@@ -1,5 +1,5 @@
-import { existsSync, promises } from 'fs';
-
+import { existsSync, promises, readFileSync } from 'fs';
+import { randomUUID } from 'crypto'
 const path = './Products.json';
 
 class ProductManager {
@@ -7,15 +7,17 @@ class ProductManager {
     constructor(pathParam){
         this.path = pathParam;
     }
-    static GlobalId = 1;
-    async getProducts(){
+
+    async getProducts(queryObj){
         try{
             if(existsSync(this.path))
             {
+                var {limit} = queryObj;
                 const productsFile = await promises.readFile(this.path, 'utf-8',(err) => {
                 console.log(err);
                 });
-                return JSON.parse(productsFile);
+                const productsData = JSON.parse(productsFile);
+                return limit ? productsData.slice(0, +limit) : productsData;
             }
             else 
             {
@@ -23,45 +25,45 @@ class ProductManager {
             }
         }
         catch(error){
-            return error;
+            throw error;
         }
     }
 
     async createProduct(product){
         try {
-            const products = await this.getProducts();
-            const productId = ProductManager.GlobalId++
+            const products = await this.getProducts({});
+            const productId = randomUUID();
             products.push({id: productId ,...product});
             await promises.writeFile(this.path, JSON.stringify(products));
             return `Product with id ${productId} CREATED`;
         } catch (error) {
-            return error;
+            throw error;
         }
     };
 
     async deleteProduct(id) {
         try {
-            const products = await this.getProducts();
+            const products = await this.getProducts({});
             const newArrayProducts = products.filter(x => x.id != id);
             if(products.length === newArrayProducts.length)
-                return `Product with id ${id} NOT FOUND`;
+                throw new Error(`Product with id ${id} NOT FOUND`);
 
             await promises.writeFile(this.path, JSON.stringify(newArrayProducts));
             return `Product with id ${id} DELETED`;
         } catch (error) {
-            return error;
+            throw error;
         }
     };
 
     async getProductById(id) {
         try {
-            const products = await this.getProducts();
+            const products = await this.getProducts({});
             const product = products.find(x => x.id == id);
             if(!product)
-                return `Product with id ${id} NOT FOUND`;
+                throw new Error(`Product with id ${id} NOT FOUND`);
             return product;
         } catch (error) {
-            return error;
+            throw error;
         }
     };
 
@@ -79,17 +81,19 @@ class ProductManager {
             });
     
             await this.deleteProduct(id);
-            const products = await this.getProducts();
+            const products = await this.getProducts({});
             products.push(product);
             await promises.writeFile(this.path, JSON.stringify(products));
             return `Product with id ${id} UPDATED`;
         } catch (error) {
-            return error;
+            throw error;
         }
     };
 }
 
 export const manager = new ProductManager(path);
+
+
 
 
 
