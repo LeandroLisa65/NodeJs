@@ -12,7 +12,7 @@ app.listen(8080,()=>{
     console.log('Escuchando 8080');
 })
 
-app.get('/api/products',async (req,res)=>{
+app.get('/products',async (req,res)=>{
     try {
     const queryObj = req.query;
     const products = await manager.getProducts(queryObj);
@@ -24,7 +24,7 @@ app.get('/api/products',async (req,res)=>{
     }
 })
 
-app.get('/api/products/:id',async (req,res)=>{
+app.get('/products/:id',async (req,res)=>{
     try {
     const {id} = req.params;
     const response = await manager.getProductById(id);
@@ -38,7 +38,7 @@ app.get('/api/products/:id',async (req,res)=>{
     }
 })
 
-app.post('/api/products',async (req,res)=>{
+app.post('/products',async (req,res)=>{
     try {
     const {title, description, price, thumbnail, code, stock} = req.body;
     if(!title || !description || !price || !thumbnail || !code || !stock)
@@ -52,7 +52,7 @@ app.post('/api/products',async (req,res)=>{
     }
 })
 
-app.put('/api/products/:id',async (req,res)=>{
+app.put('/products/:id',async (req,res)=>{
     try {
     const {id} = req.params;
     const product = req.body;
@@ -65,7 +65,7 @@ app.put('/api/products/:id',async (req,res)=>{
     }
 })
 
-app.delete('/api/products/:id',async (req,res)=>{
+app.delete('/products/:id',async (req,res)=>{
     try {
     const {id} = req.params;
     const response = await manager.deleteProduct(id);
