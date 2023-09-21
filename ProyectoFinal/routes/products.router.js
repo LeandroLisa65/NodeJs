@@ -33,7 +33,7 @@ router.post('/',async (req,res)=>{
     try {
     const {title, description, code, price, status, stock} = req.body;
     if(!title || !description || !price || !code || !status || !stock)
-        res.json(404).json({message: "Some data is missing"});
+        res.status(404).json({message: "Some data is missing"});
     const response = await productManager.createProduct(req.body);
     res.status(200).json({message:response});
     }
