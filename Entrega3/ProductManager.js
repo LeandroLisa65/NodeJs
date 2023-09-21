@@ -1,4 +1,4 @@
-import { existsSync, promises, readFileSync } from 'fs';
+import { existsSync, promises } from 'fs';
 import { randomUUID } from 'crypto'
 const path = './Products.json';
 
@@ -12,7 +12,7 @@ class ProductManager {
         try{
             if(existsSync(this.path))
             {
-                var {limit} = queryObj;
+                const {limit} = queryObj;
                 const productsFile = await promises.readFile(this.path, 'utf-8',(err) => {
                 console.log(err);
                 });

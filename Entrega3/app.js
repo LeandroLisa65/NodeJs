@@ -24,10 +24,10 @@ app.get('/products',async (req,res)=>{
     }
 })
 
-app.get('/products/:id',async (req,res)=>{
+app.get('/products/:pid',async (req,res)=>{
     try {
-    const {id} = req.params;
-    const response = await manager.getProductById(id);
+    const {pid} = req.params;
+    const response = await manager.getProductById(pid);
     if(!response)
         res.status(404).json({message:response});
     res.status(200).json({message:'Product found', product: response})
@@ -52,11 +52,11 @@ app.post('/products',async (req,res)=>{
     }
 })
 
-app.put('/products/:id',async (req,res)=>{
+app.put('/products/:pid',async (req,res)=>{
     try {
-    const {id} = req.params;
+    const {pid} = req.params;
     const product = req.body;
-    const response = await manager.updateProduct(id, product);
+    const response = await manager.updateProduct(pid, product);
     res.json({message:response});
     }
     catch(error)
@@ -65,10 +65,10 @@ app.put('/products/:id',async (req,res)=>{
     }
 })
 
-app.delete('/products/:id',async (req,res)=>{
+app.delete('/products/:pid',async (req,res)=>{
     try {
-    const {id} = req.params;
-    const response = await manager.deleteProduct(id);
+    const {pid} = req.params;
+    const response = await manager.deleteProduct(pid);
     res.json({message:response});
     }
     catch(error)
