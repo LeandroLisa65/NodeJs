@@ -30,17 +30,19 @@ const socketServer = new Server(httpServer);
 
 // connection - disconnect
 socketServer.on("connection", async (socket) => {
-  //console.log(`Cliente conectado: ${socket.id}`);
-  socket.on("disconnect", () => {
-    //console.log(`Cliente desconectado: ${socket.id}`);
+
+  socket.emit("clientConnected", "cliente conectado");
+
+  socket.emit("getProducts", await productManager.getProducts(100));
+
+  socket.on("createProduct", async (product) => {
+    await productManager.createProduct(product);
+    socket.emit("productList", await productManager.getProducts(100));
   });
-  socket.emit("priceUpdated", await productManager.getProducts(100));
-  //socket.emit("welcome", "welcome to websocket");
-  socket.on("newProduct", async (value) => {
-    await productManager.createProduct(value);
-    //socket.emit("priceUpdated", value);
-    //socketServer.emit("priceUpdated", value);
-    socket.emit("priceUpdated", await productManager.getProducts(100));
-    console.log(value);
+
+  socket.on("deleteProduct", async (id) => {
+    await productManager.deleteProduct(id);
+    socket.emit("getProducts", await productManager.getProducts(100));
   });
+  
 });

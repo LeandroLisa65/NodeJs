@@ -1,7 +1,6 @@
 const socketClient = io();
 
-const priceP = document.getElementById("priceP");
-
+//create
 const form = document.getElementById("form");
 
 const inputTitle = document.getElementById("title");
@@ -22,12 +21,46 @@ form.onsubmit = (e) => {
   product["thumbnail"] = inputThumbnail.value;
   product["code"] = inputCode.value;
   product["stock"] = inputStock.value;
-  socketClient.emit("newProduct", product);
+  socketClient.emit("createProduct", product);
 };
 
-socketClient.on("priceUpdated", function(productList){
-
+//get
+socketClient.on("getProducts", function(productList){
+  productListContainer.innerHTML = '';
   productList.forEach(function(product){
-    console.log(product);
+    productListContainer.appendChild(createDiv(product));
   })
 });
+
+const createDiv = (product) => {
+  const localDiv = document.createElement('div');
+  Object.keys(product).forEach(key => {
+    localDiv.appendChild(createSpan(`${key}: `,product[key]));
+  });
+  return localDiv;
+}
+
+const createSpan = (property,value) => {
+  const span = document.createElement('span')
+  span.innerText += property;
+  span.innerText += value;
+  span.innerText += ' ';
+
+  return span;
+}
+
+//delete
+const formDelete = document.getElementById("formDelete");
+
+const inputId = document.getElementById("id");
+
+formDelete.onsubmit = (e) => {
+  e.preventDefault();
+  const id = inputId.value;
+  socketClient.emit("deleteProduct", id);
+};
+
+//cliente conectado
+socketClient.on('clientConnected', (message) => {
+  console.log(message);
+})
