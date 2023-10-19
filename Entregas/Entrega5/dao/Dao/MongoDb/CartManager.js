@@ -15,7 +15,7 @@ class CartManager {
 
     async createCart(){
         try {
-            const response = await cartModel.create(product);
+            const response = await cartModel.create({});
             return `Cart with id ${response._id} CREATED`;
         } catch (error) {
             throw error;

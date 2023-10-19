@@ -1,7 +1,7 @@
 import { existsSync, promises } from 'fs';
 import { randomUUID } from 'crypto'
 
-const path = '../../Products.json';
+const path = './dao/Dao/FileSystem/Products.json';
 
 class ProductManager {
 

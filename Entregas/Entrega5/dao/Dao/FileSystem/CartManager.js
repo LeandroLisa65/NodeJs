@@ -2,7 +2,7 @@ import { existsSync, promises } from 'fs';
 import { randomUUID } from 'crypto'
 import { productManager } from './ProductManager.js';
 
-const path = '../../Carrito.json';
+const path = './dao/Dao/FileSystem/Carrito.json';
 
 class CartManager {
 

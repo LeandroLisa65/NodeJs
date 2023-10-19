@@ -1,13 +1,13 @@
 import express from 'express';
-import { engine } from "express-handlebars";
-import { Server } from "socket.io";
-import { __dirname } from "./utils.js";
-
 import productRouter from './routes/products.router.js';
 import cartRouter from './routes/cart.router.js';
 import viewsRouter from "./routes/views.router.js";
-
+import { __dirname } from "./utils.js";
+import { engine } from "express-handlebars";
+import { Server } from "socket.io";
 import { productManager } from './dao/Dao/MongoDb/ProductManager.js';
+import { chatManager } from './dao/Dao/MongoDb/ChatManager.js';
+import "./configDB.js";
 
 const app = express();
 app.use(express.json());
@@ -29,7 +29,7 @@ const httpServer = app.listen(8080,()=>{
 })
 
 const socketServer = new Server(httpServer);
-
+const messages = [];
 // connection - disconnect
 socketServer.on("connection", async (socket) => {
 
@@ -39,7 +39,7 @@ socketServer.on("connection", async (socket) => {
 
   socket.on("createProduct", async (product) => {
     await productManager.createProduct(product);
-    socket.emit("productList", await productManager.getProducts(100));
+    socket.emit("getProducts", await productManager.getProducts(100));
   });
 
   socket.on("deleteProduct", async (id) => {
@@ -47,4 +47,14 @@ socketServer.on("connection", async (socket) => {
     socket.emit("getProducts", await productManager.getProducts(100));
   });
   
+  socket.on("newUser", (user) => {
+    socket.broadcast.emit("userConnected", user);
+    socket.emit("connected");
+  });
+  socket.on("message", async (infoMessage) => {
+    await chatManager.addMessage(infoMessage);
+    messages.push(infoMessage);
+    socketServer.emit("chat", messages);
+  });
+
 });
