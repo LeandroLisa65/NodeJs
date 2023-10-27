@@ -31,7 +31,11 @@ const productSchema = new Schema
         }
         , thumbnail : {
             type: String
-        }
+        },
+        category: {
+            type: String,
+            required: true
+        },
     }
 )
 
