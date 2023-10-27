@@ -67,25 +67,25 @@ router.get('/products', async (req, res) => {
   let prevLink = ''
   let nextLink = ''
 
-  const products = await productManager.getProducts(query, options)
+  const products = JSON.parse(JSON.stringify(await productManager.getProducts(query, options)));
   const { docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage } = products
 
   if(query.status !== undefined){ // if query.status exists
-      hasPrevPage === false ? prevLink = null : prevLink = `/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
-      hasNextPage === false ? nextLink = null : nextLink = `/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
+      hasPrevPage === false ? prevLink = null : prevLink = `/api/views/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
+      hasNextPage === false ? nextLink = null : nextLink = `/api/views/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
   }else if(query.category !== undefined){ // if query.category exists
-      hasPrevPage === false ? prevLink = null : prevLink = `/products/${query.category}?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
-      hasNextPage === false ? nextLink = null : nextLink = `/products/${query.category}?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
+      hasPrevPage === false ? prevLink = null : prevLink = `/api/views/products/${query.category}?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
+      hasNextPage === false ? nextLink = null : nextLink = `/api/views/products/${query.category}?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
   }else{ // if there isn't query values
-      hasPrevPage === false ? prevLink = null : prevLink = `/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
-      hasNextPage === false ? nextLink = null : nextLink = `/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
+      hasPrevPage === false ? prevLink = null : prevLink = `/api/views/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
+      hasNextPage === false ? nextLink = null : nextLink = `/api/views/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
   }
   res.render('products', { payload: docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink });
 })
 
 router.get('/cart/:cid', async (req, res) => {
-  const {cid} = req.params;
-  const response = await cartManager.getCartById(cid);
+  const response = JSON.parse(JSON.stringify(await cartManager.getCartById(req.params.cid)));
+  console.log(response);
   res.render('cart', {payload: response})
 })
 

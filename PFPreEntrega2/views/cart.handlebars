@@ -7,16 +7,16 @@
         {{#each payload.products}}
             <li class="flex justify-between">
                 <div>
-                    <p class="font-semibold text-lg">{{product.title}}</p>
-                    <p class="font-bold text-xl text-green-600 text-justify">$ {{product.price}}</p>
-                    <p class="max-w-lg my-2">{{product.description}}</p>
                     <p class="">QUANTITY: {{quantity}}</p>
                     <p class="">PRODUCT ID: {{product._id}}</p>
+                    <p class="">TITLE: {{product.title}}</p>
+                    <p class="">DESCRIPTION: {{product.description}}</p>
+                    <p class="">PRICE: {{product.price}}</p>
                     <p class="">CODE: {{product.code}}</p>
                     <p class="">STATUS: {{product.status}}</p>
                     <p class="">STOCK: {{product.stock}}</p>
                     <p class="">CATEGORY: {{product.category}}</p>
-                    <p class="max-w-lg">Nº OF THUMBNAILS: {{product.thumbnails.length}}</p>
+                    <p class="max-w-lg">THUMBNAIL: {{product.thumbnail}}</p>
                 </div>
                 <div class="flex flex-wrap justify-end gap-2">
                     {{#each product.thumbnails}}

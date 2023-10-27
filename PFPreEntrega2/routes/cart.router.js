@@ -17,8 +17,7 @@ router.get('/',async (req,res)=>{
 
 router.get('/:cid',async (req,res)=>{
     try {
-    const {cid} = req.params;
-    const response = await cartManager.getCartById(cid);
+    const response = await cartManager.getCartById(req.params.cid);
     if(!response)
         res.status(404).json({message:response});
     res.status(200).json({message:'Cart found', cart: response})

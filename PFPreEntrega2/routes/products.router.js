@@ -30,7 +30,7 @@ router.get('/',async (req,res) => {
             query.category = req.query.query
         }
 
-        let sort = null;
+        let sort = req.query.sort == undefined ? { price: 1 } : { price: -1 };
 
         if (req.query.sort === "asc") 
         { // asc or desc
@@ -52,14 +52,14 @@ router.get('/',async (req,res) => {
         const { docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage } = products
 
         if(query.status !== undefined){ // if query.status exists
-            hasPrevPage === false ? prevLink = null : prevLink = `/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
-            hasNextPage === false ? nextLink = null : nextLink = `/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
+            hasPrevPage === false ? prevLink = null : prevLink = `/api/views/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
+            hasNextPage === false ? nextLink = null : nextLink = `/api/views/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
         }else if(query.category !== undefined){ // if query.category exists
-            hasPrevPage === false ? prevLink = null : prevLink = `/products/${query.category}?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
-            hasNextPage === false ? nextLink = null : nextLink = `/products/${query.category}?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
+            hasPrevPage === false ? prevLink = null : prevLink = `/api/views/products/${query.category}?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
+            hasNextPage === false ? nextLink = null : nextLink = `/api/views/products/${query.category}?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
         }else{ // if there isn't query values
-            hasPrevPage === false ? prevLink = null : prevLink = `/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
-            hasNextPage === false ? nextLink = null : nextLink = `/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
+            hasPrevPage === false ? prevLink = null : prevLink = `/api/views/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
+            hasNextPage === false ? nextLink = null : nextLink = `/api/views/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
         }
 
         res.status(200).json({message:'Products found', products: { products: docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink}})
@@ -86,7 +86,7 @@ router.get('/:pid',async (req,res)=>{
 
 router.post('/',async (req,res)=>{
     try {
-    const {title, description, code, price, status, stock} = req.body;
+    const {title, description, code, price, status, stock, category} = req.body;
     if(!title || !description || !price || !code || !status || !stock || !category)
         res.status(404).json({message: "Some data is missing"});
     const response = await productManager.createProduct(req.body);

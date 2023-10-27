@@ -11,23 +11,19 @@ class ProductManager {
         }
     }
 
-    async getProductById(id) {
-        try {
-            const product = await productModel.findById(id);
-            if(!product)
-                throw new Error(`Product with id ${id} NOT FOUND`);
-            return product;
-        } catch (error) {
-            throw error;
+    async getProductById(pid){
+        try{
+            return await productModel.findOne({_id: pid})
+        }catch(err){
+            return new Error(err)
         }
-    };
+    }
     
     async createProduct(product){
-        try {
-            const response = await productModel.create(product);
-            return `Product with id ${response._id} CREATED`;
-        } catch (error) {
-            throw error;
+        try{
+            return await productModel.create(product)
+        }catch(err){
+            return new Error(err)
         }
     };
 
