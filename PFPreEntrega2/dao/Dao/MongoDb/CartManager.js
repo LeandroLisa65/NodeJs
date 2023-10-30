@@ -1,4 +1,3 @@
-import { productManager } from './ProductManager.js';
 import { cartModel } from '../../models/carts.model.js';
 
 class CartManager {
@@ -41,43 +40,17 @@ class CartManager {
         }
     }
 
-    async #updateCart(cid, updatedCart){
-        try {
-            await cartModel.updateOne({_id:cid}, updatedCart);
-            return `Cart with id ${cid} UPDATED`;
-        } catch (error) {
-            throw error;
-        }
-    };
-
-    async #deleteCart(id) {
-        try {
-            await cartModel.deleteOne({_id:id});
-            return `Cart with id ${id} DELETED`;
-        } catch (error) {
-            throw error;
-        }
-    };
-
     async deleteProductFromCart(cid, pid)
     {
-        try 
-        {
-            const cart = await cartModel.findOne({_id: cid})
-            const index = cart.products.findIndex(product => product.product == pid)
+        const cart = await cartModel.findOne({_id: cid})
+        const index = cart.products.findIndex(product => product.product == pid)
 
-            if(index === -1){
-                return null
-            }else{
-                const filter = { _id: cid };
-                const update = { $pull: { products: { product: pid } } }
-                await cartModel.findOneAndUpdate(filter, update)
-            }
-
-            return `Product ${pid} in Cart ${id} DELETED`;
-        } 
-        catch (error) {
-            throw error;
+        if(index === -1){
+            return null
+        }else{
+            const filter = { _id: cid };
+            const update = { $pull: { products: { product: pid } } }
+            await cartModel.findOneAndUpdate(filter, update)
         }
     }
 

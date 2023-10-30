@@ -54,25 +54,27 @@ router.post('/:cid/product/:pid',async (req,res)=>{
 
 router.delete('/:cid/products/:pid', async (req, res) => {
     try{
-        const response = await cartManager.deleteProductFromCart(req, res);
+        const response = await cartManager.deleteProductFromCart(req.params.cid, req.params.pid);
         res.status(200).json({message:response});
     }catch(error){
-        res.sendServerError(error.message)
+        res.status(500).json({message: error.message})
     }
 })
 
 router.put('/:cid', async (req, res) => {
     try{
         const { products } = req.body
-        const { cid } = req.params.cid;
-        const response = await cartManager.updateCart(cid, products)
+
+        console.log(products);
+        console.log(req.params.cid);
+        const response = await cartManager.updateCart(req.params.cid, products)
 
         if(!response)
             res.status(404).json({message:response});
         
-        res.status(200).json({message:'Cart Updated', cart: response})
+        res.status(200).json({message:'Cart Updated', cart: {}})
     }catch(error){
-        res.sendServerError(error.message)
+        res.status(500).json({message: error.message})
     }
 })
 
@@ -86,7 +88,7 @@ router.put('/:cid/products/:pid', async (req, res) => {
         
         res.status(200).json({message:response});
     }catch(error){
-        res.sendServerError(error.message)
+        res.status(500).json({message: error.message})
     }
 })
 
@@ -99,7 +101,7 @@ router.delete('/:cid', async (req, res) => {
     
         res.status(200).json({message:response});
     }catch(error){
-        res.sendServerError(error.message)
+        res.status(500).json({message: error.message})
     }
 })
 
