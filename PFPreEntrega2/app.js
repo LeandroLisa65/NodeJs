@@ -7,6 +7,9 @@ import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import { productManager } from './dao/Dao/MongoDb/ProductManager.js';
 import { chatManager } from './dao/Dao/MongoDb/ChatManager.js';
+import errorLogger from './middlewares/errorLogger.js';
+import invalidPathHandler from "./middlewares/errorPathHandler.js";
+import errorResponder from './middlewares/errorResponder.js';
 import "./configDB.js";
 
 const app = express();
@@ -64,3 +67,9 @@ socketServer.on("connection", async (socket) => {
   });
 
 });
+
+app.use(errorLogger)
+
+app.use(errorResponder)
+
+app.use(invalidPathHandler)
