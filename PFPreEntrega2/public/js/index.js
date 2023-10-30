@@ -9,6 +9,7 @@ const inputPrice = document.getElementById("price");
 const inputThumbnail = document.getElementById("thumbnail");
 const inputCode = document.getElementById("code");
 const inputStock = document.getElementById("stock");
+const inputCategory = document.getElementById("category");
 
 const productListContainer = document.getElementById("productList");
 
@@ -21,13 +22,15 @@ form.onsubmit = (e) => {
   product["thumbnail"] = inputThumbnail.value;
   product["code"] = inputCode.value;
   product["stock"] = inputStock.value;
+  product["category"] = inputCategory.value;
   socketClient.emit("createProduct", product);
 };
 
 //get
 socketClient.on("getProducts", function(productList){
   productListContainer.innerHTML = '';
-  productList.forEach(function(product){
+  console.log(productList);
+  productList.docs.forEach(function(product){
     productListContainer.appendChild(createDiv(product));
   })
 });

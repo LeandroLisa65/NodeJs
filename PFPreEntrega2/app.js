@@ -32,19 +32,25 @@ const socketServer = new Server(httpServer);
 const messages = [];
 // connection - disconnect
 socketServer.on("connection", async (socket) => {
-
+  const query = {};
+  const options = {
+    limit: 100,
+    page: 1,
+    sort: 'asc'
+}
   socket.emit("clientConnected", "cliente conectado");
 
-  socket.emit("getProducts", await productManager.getProducts(100));
+  socket.emit("getProducts", await productManager.getProducts(query,options));
 
   socket.on("createProduct", async (product) => {
+    console.log(product);
     await productManager.createProduct(product);
-    socket.emit("getProducts", await productManager.getProducts(100));
+    socket.emit("getProducts", await productManager.getProducts(query,options));
   });
 
   socket.on("deleteProduct", async (id) => {
     await productManager.deleteProduct(id);
-    socket.emit("getProducts", await productManager.getProducts(100));
+    socket.emit("getProducts", await productManager.getProducts(query,options));
   });
   
   socket.on("newUser", (user) => {
