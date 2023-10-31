@@ -3,7 +3,7 @@ import { productManager } from '../dao/Dao/MongoDb/ProductManager.js';
 
 const router = Router();
 
-router.get('/',async (req,res) => {
+router.get('/',async (req,res, next) => {
     try {
         let queryPage = ''
         if (req.query.page) {
@@ -66,11 +66,11 @@ router.get('/',async (req,res) => {
     }
     catch(error)
     {
-        res.status(500).json({message: error.message})
+        next(error);
     }
 })
 
-router.get('/:pid',async (req,res)=>{
+router.get('/:pid',async (req, res, next)=>{
     try {
     const {pid} = req.params;
     const response = await productManager.getProductById(pid);
@@ -80,11 +80,11 @@ router.get('/:pid',async (req,res)=>{
     }
     catch(error)
     {
-        res.status(500).json({message: error.message})
+        next(error);
     }
 })
 
-router.post('/',async (req,res)=>{
+router.post('/',async (req, res, next)=>{
     try {
     const {title, description, code, price, status, stock, category} = req.body;
     if(!title || !description || !price || !code || !status || !stock || !category)
@@ -94,11 +94,11 @@ router.post('/',async (req,res)=>{
     }
     catch(error)
     {
-        res.status(500).json({message: error.message})
+        next(error);
     }
 })
 
-router.put('/:pid',async (req,res)=>{
+router.put('/:pid',async (req, res, next)=>{
     try {
     const {pid} = req.params;
     const product = req.body;
@@ -107,19 +107,19 @@ router.put('/:pid',async (req,res)=>{
     }
     catch(error)
     {
-        res.status(500).json({message: error.message})
+        next(error);
     }
 })
 
-router.delete('/:pid',async (req,res)=>{
+router.delete('/:pid',async (req, res, next)=>{
     try {
-    const {pid} = req.params;
-    const response = await productManager.deleteProduct(pid);
-    res.json({message:response});
+        const {pid} = req.params;
+        const response = await productManager.deleteProduct(pid);
+        res.json({message:response});
     }
     catch(error)
     {
-        res.status(500).json({message: error.message})
+        next(error);
     }
 })
 

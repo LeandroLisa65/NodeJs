@@ -68,8 +68,8 @@ socketServer.on("connection", async (socket) => {
 
 });
 
-app.use(errorLogger)
+app.use(errorLogger);
 
-app.use(errorResponder)
+app.use(errorResponder);
 
-app.use(invalidPathHandler)
+app.use(invalidPathHandler);

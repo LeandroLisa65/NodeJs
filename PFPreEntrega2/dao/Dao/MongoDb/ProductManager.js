@@ -2,28 +2,39 @@ import { productModel } from '../../models/products.model.js';
 
 class ProductManager {
 
-    async getProducts(query, options){
-        try{
+    async getProducts(query, options)
+    {
+        try
+        {
             return await productModel.paginate(query, options)
         }
-        catch(error){
+        catch(error)
+        {
             throw error;
         }
     }
 
-    async getProductById(pid){
-        try{
+    async getProductById(pid)
+    {
+        try
+        {
             return await productModel.findOne({_id: pid})
-        }catch(err){
-            return new Error(err)
+        }
+        catch(error)
+        {
+            throw error;
         }
     }
     
-    async createProduct(product){
-        try{
+    async createProduct(product)
+    {
+        try
+        {
             return await productModel.create(product)
-        }catch(err){
-            return new Error(err)
+        }
+        catch(error)
+        {
+            throw error;
         }
     };
 
@@ -31,16 +42,22 @@ class ProductManager {
         try {
             await productModel.deleteOne({_id:id});
             return `Product with id ${id} DELETED`;
-        } catch (error) {
+        }
+        catch(error)
+        {
             throw error;
         }
     };
 
-    async updateProduct(id, updatedProduct){
-        try {
+    async updateProduct(id, updatedProduct)
+    {
+        try 
+        {
             await productModel.updateOne({_id:id}, updatedProduct);
             return `Product with id ${id} UPDATED`;
-        } catch (error) {
+        }
+        catch(error)
+        {
             throw error;
         }
     };
