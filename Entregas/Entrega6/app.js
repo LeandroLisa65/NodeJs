@@ -43,7 +43,9 @@ app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 app.use("/api/views", viewsRouter);
 app.use("/api/session", sessionRouter);
-
+app.use('/', (req, res) => {
+  res.redirect('/api/views/login');
+});
 const httpServer = app.listen(8080,()=>{
     console.log('Escuchando 8080');
 })
