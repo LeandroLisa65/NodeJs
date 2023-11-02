@@ -80,7 +80,8 @@ router.get('/products', async (req, res) => {
       hasPrevPage === false ? prevLink = null : prevLink = `/api/views/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
       hasNextPage === false ? nextLink = null : nextLink = `/api/views/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
   }
-  res.render('products', { payload: docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink });
+  console.log(req.session.user)
+  res.render('products', { payload: docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink, user: req.session.user });
 })
 
 router.get('/cart/:cid', async (req, res) => {
@@ -90,15 +91,24 @@ router.get('/cart/:cid', async (req, res) => {
 })
 
 router.get('/login', (req, res) => {
+  if(req.session.user)
+    return res.redirect('/api/views/products');
+
   res.render('login');
 })
 
 router.get('/signup', (req, res) => {
+  if(req.session.user)
+    return res.redirect('/api/views/profile');
+
   res.render('signup');
 })
 
 router.get('/profile', (req, res) => {
-  res.render('profile');
+  if(!req.session.user)
+  return res.redirect('/api/views/login');
+
+  res.render('profile', {user: req.session.user});
 })
 
 export default router;

@@ -1,5 +1,7 @@
-<form action="/session/login" method="post">
-    Email: <input type="email" id="email">
-    Password: <input type="password" id="password">
-    <input type="submit" value="Sign Up">
+<form action="/api/session/login" method="post">
+    Email: <input type="email" name="email" id="email">
+    Password: <input type="password" name="password" id="password">
+    <input type="submit" value="Login">
 </form>
+
+<a href="/api/views/signup" type="submit" value="Registrate">Registrate</a>

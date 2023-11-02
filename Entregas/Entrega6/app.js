@@ -12,30 +12,26 @@ import errorLogger from './middlewares/errorLogger.js';
 import invalidPathHandler from "./middlewares/errorPathHandler.js";
 import errorResponder from './middlewares/errorResponder.js';
 import "./configDB.js";
-import MongoStore from 'mongo-connect';
-import cookieParser
- from 'cookie-parser';
+import session from 'express-session'
+import cookieParser from 'cookie-parser';
+import MongoStore from 'connect-mongo';
+
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser);
 app.use(express.static(__dirname + "/public"));
-
+app.use(cookieParser('SecretCookie'));
 const URI = "mongodb+srv://leandromlisa:6PD1FqTXbhmjEScT@cluster0.cxg4lof.mongodb.net/ecommerce?retryWrites=true&w=majority";
 
-app.use
-(
-  session(
-    {
+app.use(
+  session({
       store: new MongoStore({
         mongoUrl: URI,
       }),
       secret: "secretSession",
       cookie: {maxAge:60000},
-    }
-  )
-);
+}));
 
 // handlebras
 app.engine("handlebars", engine());
@@ -43,10 +39,10 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
 //routes
-app.use('/api/products',productRouter);
-app.use('/api/carts',cartRouter);
+app.use('/api/products', productRouter);
+app.use('/api/carts', cartRouter);
 app.use("/api/views", viewsRouter);
-app.use("session",sessionRouter);
+app.use("/api/session", sessionRouter);
 
 const httpServer = app.listen(8080,()=>{
     console.log('Escuchando 8080');

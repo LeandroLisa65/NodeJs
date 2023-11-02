@@ -26,18 +26,6 @@ class UserManager{
         }
     }
 
-    async getUserByLogin(email, password)
-    {
-        try
-        {
-            return await userModel.findOne({email: email, password: password})
-        }
-        catch (error) 
-        {
-            return new Error(error)
-        }
-    }
-
     async addUser(user){
         try{
             return await userModel.create(user)
