@@ -111,4 +111,8 @@ router.get('/profile', (req, res) => {
   res.render('profile', {user: req.session.user});
 })
 
+router.get('/recover', (req, res) => {
+  return res.render('recover');
+})
+
 export default router;

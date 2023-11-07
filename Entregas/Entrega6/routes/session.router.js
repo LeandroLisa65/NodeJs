@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { userManager } from '../dao/Dao/MongoDb/UserManager.js';
+import { hashData, compareData } from '../utils.js';
+
 const router = Router();
 
 router.post('/signup', async (req, res) => {
@@ -9,7 +11,8 @@ router.post('/signup', async (req, res) => {
         res.status(400).json({message: 'All fields are required'});
     
     try {
-        const createdUser = await userManager.addUser(req.body);
+        const hashedPassword = hashData(password);
+        const createdUser = await userManager.addUser({ ...req.body, password: hashPassword });
         
         res.status(200).json({message:'User created', user: createdUser})
     } catch (error) {
@@ -30,7 +33,7 @@ router.post('/login', async (req, res) => {
         if(!user)
             return res.redirect('/api/views/signup')
         
-        const isPasswordValid = password === user.password;
+        const isPasswordValid = compareData(password, user.password);
 
         if(!isPasswordValid)
             return res.status(401).json({message: 'Password invalid'});
@@ -58,4 +61,27 @@ router.get('/signout', (req, res) => {
     })
 });
 
+router.post('/recover', async (req, res) => {
+    const {email, password} = req.body;
+    console.log(req.body);
+    if(!email || !password)
+        res.status(404).json({message: 'All fields are required'});
+    
+    try {
+        const user = await userManager.getUserByEmail(email);
+        console.log(user);
+        if(!user)
+            return res.redirect('/api/views/login')
+
+        const hashedPassword = await hashData(password);
+        console.log(hashedPassword);
+        user.password = hashedPassword;
+        await user.save();
+        return res.status(200).send({message: "Password update"});
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
+});
 export default router;

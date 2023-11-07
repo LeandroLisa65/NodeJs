@@ -4,36 +4,58 @@
 <a href="/api/session/signout" type="submit" value="LogOut">LOGOUT</a>
 {{#if payload}}
     <table role="grid" style="margin-right: 30px; margin-left: 30px; width:96%">
-    <thead>
-        <tr>
-        <th scope="col">ID</th>
-        <th scope="col">TITLE</th>
-        <th scope="col">DESCRIPTION</th>
-        <th scope="col">PRICE</th>
-        <th scope="col">CODE</th>
-        <th scope="col">STATUS</th>
-        <th scope="col">STOCK</th>
-        <th scope="col">CATEGORY</th>
-        <th scope="col">THUMBNAIL</th>
-        <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each payload}}
-        <tr>
-        <td><p style="display:inline-block;max-width:50px;">{{_id}}</p></td>
-        <td><p style="display:inline-block;max-width:50px;">{{title}}</p></td>
-        <td><p style="display:inline-block;max-width:50px;">{{description}}</p></td>
-        <td><p style="display:inline-block;max-width:50px;">{{price}}</p></td>
-        <td><p style="display:inline-block;max-width:50px;">{{code}}</p></td>
-        <td><p style="display:inline-block;max-width:50px;">{{status}}</p></td>
-        <td><p style="display:inline-block;max-width:50px;">{{stock}}</p></td>
-        <td><p style="display:inline-block;max-width:50px;">{{category}}</p></td>
-        <td><p style="display:inline-block;max-width:50px;">{{thumbnail}}</p></td>
-        <td><form><button id={{_id}}>+</button></form></td>
-        </tr>
-        {{/each}}
-    </tbody>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">TITLE</th>
+                <th scope="col">DESCRIPTION</th>
+                <th scope="col">PRICE</th>
+                <th scope="col">CODE</th>
+                <th scope="col">STATUS</th>
+                <th scope="col">STOCK</th>
+                <th scope="col">CATEGORY</th>
+                <th scope="col">THUMBNAIL</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each payload}}
+            <tr>
+                <td>
+                    <p style="display:inline-block;max-width:50px;">{{_id}}</p>
+                </td>
+                <td>
+                    <p style="display:inline-block;max-width:50px;">{{title}}</p>
+                </td>
+                <td>
+                    <p style="display:inline-block;max-width:50px;">{{description}}</p>
+                </td>
+                <td>
+                    <p style="display:inline-block;max-width:50px;">{{price}}</p>
+                </td>
+                <td>
+                    <p style="display:inline-block;max-width:50px;">{{code}}</p>
+                </td>
+                <td>
+                    <p style="display:inline-block;max-width:50px;">{{status}}</p>
+                </td>
+                <td>
+                    <p style="display:inline-block;max-width:50px;">{{stock}}</p>
+                </td>
+                <td>
+                    <p style="display:inline-block;max-width:50px;">{{category}}</p>
+                </td>
+                <td>
+                    <p style="display:inline-block;max-width:50px;">{{thumbnail}}</p>
+                </td>
+                <td>
+                    <form>
+                        <button id={{_id}}>+</button>
+                    </form>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
     </table>
     <div style="width: fit-content; margin: 0 auto;">
         <div style="display: inline-flex;overflow: hidden;white-space: nowrap;">
@@ -63,59 +85,6 @@
         {{/if}}
     </div>
 {{/if}}
-<!--<div>
-    <h1>Products</h1>
-    <ul>
-        {{#if payload}}
-            {{#each payload}}
-                <article class="flex justify-between">
-                    <div>
-                        <span class="">ID: {{_id}}</span>
-                        <span class="">TITLE: {{title}}</span>
-                        <p class="">DESCRIPTION: {{description}}</p>
-                        <p class="">PRICE: {{price}}</p>
-                        <p class="">CODE: {{code}}</p>
-                        <p class="">STATUS: {{status}}</p>
-                        <p class="">STOCK: {{stock}}</p>
-                        <p class="">CATEGORY: {{category}}</p>
-                        <p class="">THUMBNAIL: {{thumbnail}}</p>
-                        <form>
-                            <button id={{_id}}>Add to cart</button>
-                        </form>
-                    </div>
-                </article>
-                <hr>
-            {{/each}}
-            <div>
-                <div>
-                    {{#if hasPrevPage}}
-                        <a href={{prevLink}}>Back</a>
-                    {{/if}}
-                </div>
-                <div>
-                    {{#if page}}
-                        <p>{{page}}</p>
-                    {{/if}}
-                </div>
-                <div>
-                    {{#if hasNextPage}}
-                        <a href={{nextLink}}>Next</a>
-                    {{/if}}
-                </div>
-            </div>
-        {{else}}
-        <div class="flex flex-col justify-center items-center gap-2">
-            <hr>
-            {{#if message}}
-                <h3>ERROR: {{message}}</h3>
-                <a href="/api/views/products">Go back</a>
-            {{else}}
-                <h3>There are no products with the filters applied</h3>
-            {{/if}}
-        </div>
-        {{/if}}
-    </ul>
-</div>-->
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-<script src="/static/js/products.js"></script>
+<script src="/static/js/products.js" />
