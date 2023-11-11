@@ -9,7 +9,6 @@ app.get('/',(req,res)=>{
 
 app.get('/api',(req,res)=>{
     console.log(req);
-    //res.send('Probando API')
     res.json({message:'Probando'})
 })
 

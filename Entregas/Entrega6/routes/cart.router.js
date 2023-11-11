@@ -73,8 +73,6 @@ router.put('/:cid', async (req, res, next) => {
     {
         const { products } = req.body
 
-        console.log(products);
-        console.log(req.params.cid);
         const response = await cartManager.updateCart(req.params.cid, products)
 
         if(!response)

@@ -15,6 +15,8 @@ import "./configDB.js";
 import session from 'express-session'
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
+import "./passport.js";
+import passport from 'passport';
 
 const app = express();
 
@@ -22,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser('SecretCookie'));
+
 const URI = "mongodb+srv://leandromlisa:6PD1FqTXbhmjEScT@cluster0.cxg4lof.mongodb.net/ecommerce?retryWrites=true&w=majority";
 
 app.use(
@@ -32,6 +35,9 @@ app.use(
       secret: "secretSession",
       cookie: {maxAge:60000},
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // handlebras
 app.engine("handlebars", engine());

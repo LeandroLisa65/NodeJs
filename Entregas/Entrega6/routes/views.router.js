@@ -24,8 +24,19 @@ router.get("/chat", (req, res) => {
 });
 
 router.get('/products', async (req, res) => {
-  let queryPage = ''
+  if (!req.session.passport) {
+    return res.redirect("/login");
+  }
+  console.log('Init logging');
+  const requser = await req.user;
+  const isAdmin = requser.email == 'adminCoder@coder.com';
+  const rol = isAdmin ? 'Admin' : 'Usuario'
+  console.log(await req.user);
+  console.log('End logging');
+
+  let queryPage = '';
   if (req.query.page) {
+      console.log(req.body)
       queryPage = parseInt(req.query.page);
       if (isNaN(queryPage) || queryPage < 1) {
           throw new Error('Invalid page number');
@@ -80,8 +91,8 @@ router.get('/products', async (req, res) => {
       hasPrevPage === false ? prevLink = null : prevLink = `/api/views/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
       hasNextPage === false ? nextLink = null : nextLink = `/api/views/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
   }
-  console.log(req.session.user)
-  res.render('products', { payload: docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink, user: req.session.user });
+
+  res.render('products', { payload: docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink, user: { first_name: requser.first_name, email: requser.email, rol } });
 })
 
 router.get('/cart/:cid', async (req, res) => {
@@ -114,5 +125,9 @@ router.get('/profile', (req, res) => {
 router.get('/recover', (req, res) => {
   return res.render('recover');
 })
+
+router.get("/error", (req, res) => {
+  res.render("error");
+});
 
 export default router;

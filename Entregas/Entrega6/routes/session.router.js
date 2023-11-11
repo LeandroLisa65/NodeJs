@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import { userManager } from '../dao/Dao/MongoDb/UserManager.js';
 import { hashData, compareData } from '../utils.js';
+import passport from '../passport.js';
 
 const router = Router();
 
+/*
 router.post('/signup', async (req, res) => {
     const {first_name, last_name, email, password} = req.body;
 
@@ -47,7 +49,25 @@ router.post('/login', async (req, res) => {
         throw error;
     }
 });
+*/
 
+
+router.post(
+    "/signup",
+    passport.authenticate("signup", {
+      successRedirect: "/profile",
+      failureRedirect: "/error",
+    })
+  );
+  
+  router.post(
+    "/login",
+    passport.authenticate("login", {
+      successRedirect: '/api/views/products',
+      failureRedirect: "/error",
+    })
+  );
+  
 router.get('/profile', (req, res) => {
     if(!req.session.user)
         return res.redirect('/api/views/login');
@@ -63,25 +83,31 @@ router.get('/signout', (req, res) => {
 
 router.post('/recover', async (req, res) => {
     const {email, password} = req.body;
-    console.log(req.body);
+
     if(!email || !password)
         res.status(404).json({message: 'All fields are required'});
     
     try {
         const user = await userManager.getUserByEmail(email);
-        console.log(user);
+        
         if(!user)
             return res.redirect('/api/views/login')
 
         const hashedPassword = await hashData(password);
-        console.log(hashedPassword);
+        
         user.password = hashedPassword;
         await user.save();
         return res.status(200).send({message: "Password update"});
     } catch (error) {
-        console.log(error);
         throw error;
     }
 
 });
+
+router.get("/auth/github",passport.authenticate('github', { scope: ['user:email'] }));
+  
+router.get("/callback", passport.authenticate('github'), (req, res) => {
+res.redirect("/api/views/products");
+});
+
 export default router;
