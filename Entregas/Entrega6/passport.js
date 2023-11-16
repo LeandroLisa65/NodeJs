@@ -104,7 +104,7 @@ try {
 });
 
 const handleLogin = (user, done, property) => {
-  console.log(user[property]);
+
   if (user[property]) {
     const isAdmin = user.email == 'adminCoder@coder.com';
     const rol = isAdmin ? 'Admin' : 'Usuario'
@@ -134,7 +134,7 @@ const signupGithub = (profile) => {
 
   if(profile._json.email)
     email = profile._json.email;
-  console.log(email);
+
   return {
     first_name: name,
     last_name: last_name,

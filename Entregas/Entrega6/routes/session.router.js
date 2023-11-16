@@ -55,8 +55,8 @@ router.post('/login', async (req, res) => {
 router.post(
     "/signup",
     passport.authenticate("signup", {
-      successRedirect: "/profile",
-      failureRedirect: "/error",
+      successRedirect: "/",
+      failureRedirect: "/api/views/error",
     })
   );
   
@@ -64,7 +64,7 @@ router.post(
     "/login",
     passport.authenticate("login", {
       successRedirect: '/api/views/products',
-      failureRedirect: "/error",
+      failureRedirect: "/api/views/error",
     })
   );
   
