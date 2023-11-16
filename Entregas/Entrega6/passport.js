@@ -99,18 +99,6 @@ try {
 }
 });
 
-const handleLogin = (user, done, property) => {
-
-  if (user[property]) {
-    const isAdmin = user.email == 'adminCoder@coder.com';
-    const rol = isAdmin ? 'Admin' : 'Usuario'
-    user.rol = rol;
-    return done(null, user);
-  } else {
-    return done(null, false);
-  }
-}
-
 const signupGithub = (profile) => {
   let name = '';
   let last_name = '';
