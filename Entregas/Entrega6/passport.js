@@ -118,6 +118,8 @@ const handleLogin = (user, done, property) => {
 const signupGithub = (profile) => {
   let name = '';
   let last_name = '';
+  let email = '';
+
   if(profile._json.name)
     {
       if(profile._json.name.indexOf(' ') >= 0)
@@ -129,8 +131,6 @@ const signupGithub = (profile) => {
       else
         name = profile._json.name;
     }
-
-  let email = '';
 
   if(profile._json.email)
     email = profile._json.email;
