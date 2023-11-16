@@ -72,46 +72,17 @@ passport.use(
         try {
 
           const user = await userManager.getUserByEmail(profile._json.email);
-          const isAdmin = user.email == 'adminCoder@coder.com';
-          const rol = isAdmin ? 'Admin' : 'Usuario'
 
           if (user) {
-            if (user.isGithub) {
-              return done(null, user);
-            } else {
-              return done(null, false);
-            }
+            return handleLogin(user, done, 'isGithub');
           }
           
-          let name = '';
-          let last_name = '';
-          if(profile._json.name)
-            {
-              if(profile._json.name.indexOf(' ') >= 0)
-              {
-                let names = profile._json.name.split(' ');
-                name = names[0];
-                last_name = names[1];
-              }
-              else
-                name = profile._json.name;
-            }
-
-          let email = '';
-
-          if(profile._json.email)
-            email = profile._json.email;
-
-          const infoUser = {
-            first_name: name,
-            last_name: last_name,
-            email: email,
-            password: " ",
-            isGithub: true,
-          };
-          await userManager.addUser(infoUser);
-
-          done(null, {first_name: infoUser.first_name, email: infoUser.email, rol: rol});
+          const infoUser = signupGithub(profile);
+          const createdUser = await userManager.addUser(infoUser);
+          const isAdmin = createdUser.email == 'adminCoder@coder.com';
+          const rol = isAdmin ? 'Admin' : 'Usuario';
+          console.log(createdUser);
+          done(null, {first_name: createdUser.first_name, email: createdUser.email, rol: rol});
         } catch (error) {
           done(error);
         }
@@ -131,5 +102,46 @@ try {
     done(error)
 }
 });
+
+const handleLogin = (user, done, property) => {
+  console.log(user[property]);
+  if (user[property]) {
+    const isAdmin = user.email == 'adminCoder@coder.com';
+    const rol = isAdmin ? 'Admin' : 'Usuario'
+    user.rol = rol;
+    return done(null, user);
+  } else {
+    return done(null, false);
+  }
+}
+
+const signupGithub = (profile) => {
+  let name = '';
+  let last_name = '';
+  if(profile._json.name)
+    {
+      if(profile._json.name.indexOf(' ') >= 0)
+      {
+        let names = profile._json.name.split(' ');
+        name = names[0];
+        last_name = names[1];
+      }
+      else
+        name = profile._json.name;
+    }
+
+  let email = '';
+
+  if(profile._json.email)
+    email = profile._json.email;
+
+  return {
+    first_name: name,
+    last_name: last_name,
+    email: email,
+    password: " ",
+    isGithub: true,
+  };
+}
 
 export default passport;
