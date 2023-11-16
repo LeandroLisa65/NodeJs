@@ -70,19 +70,15 @@ passport.use(
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-
-          const user = await userManager.getUserByEmail(profile._json.email);
-
-          if (user) {
-            return handleLogin(user, done, 'isGithub');
+          const user = await userManager.getUserByEmail(profile._json.email)
+          if(!user){
+              let newUser = signupGithub(profile);
+              const result = await userManager.addUser(newUser)
+              return done(null, result)
           }
           
-          const infoUser = signupGithub(profile);
-          const createdUser = await userManager.addUser(infoUser);
-          const isAdmin = createdUser.email == 'adminCoder@coder.com';
-          const rol = isAdmin ? 'Admin' : 'Usuario';
-          console.log(createdUser);
-          done(null, {first_name: createdUser.first_name, email: createdUser.email, rol: rol});
+          return done(null, user)
+          
         } catch (error) {
           done(error);
         }
