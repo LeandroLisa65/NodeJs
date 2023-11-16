@@ -27,12 +27,10 @@ router.get('/products', async (req, res) => {
   if (!req.session.passport) {
     return res.redirect("/login");
   }
-  console.log('Init logging');
+
   const requser = await req.user;
   const isAdmin = requser.email == 'adminCoder@coder.com';
   const rol = isAdmin ? 'Admin' : 'Usuario'
-  console.log(await req.user);
-  console.log('End logging');
 
   let queryPage = '';
   if (req.query.page) {

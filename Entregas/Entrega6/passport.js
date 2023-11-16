@@ -118,7 +118,7 @@ const handleLogin = (user, done, property) => {
 const signupGithub = (profile) => {
   let name = '';
   let last_name = '';
-  let email = '';
+  let email = ' ';
 
   if(profile._json.name)
     {
@@ -134,7 +134,7 @@ const signupGithub = (profile) => {
 
   if(profile._json.email)
     email = profile._json.email;
-
+  console.log(email);
   return {
     first_name: name,
     last_name: last_name,
