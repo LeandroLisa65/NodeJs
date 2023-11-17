@@ -104,7 +104,7 @@ router.post('/recover', async (req, res) => {
 
 });
 
-router.get("/auth/github",passport.authenticate('github', { scope: ['user:email'] }));
+router.get("/auth/github",passport.authenticate('github'));
   
 router.get("/callback", passport.authenticate('github'), (req, res) => {
 res.redirect("/api/views/products");
