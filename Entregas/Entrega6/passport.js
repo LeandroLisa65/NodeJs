@@ -158,6 +158,16 @@ try {
 }
 });
 
+const signupGoogle = (profile) => {
+  return {
+    first_name: profile._json.given_name,
+    last_name: profile._json.family_name,
+    email: profile._json.email,
+    password: " ",
+    isGoogle: true,
+  };
+}
+
 const signupGithub = (profile) => {
   let name = '';
   let last_name = '';
