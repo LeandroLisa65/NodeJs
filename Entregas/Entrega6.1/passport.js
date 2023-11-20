@@ -2,8 +2,6 @@ import passport from "passport";
 import { userManager } from './dao/Dao/MongoDb/UserManager.js';
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
-import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
 import { hashData, compareData } from "./utils.js";
 
 passport.use('signup', new LocalStrategy
@@ -85,62 +83,6 @@ passport.use(
         } catch (error) {
           done(error);
         }
-      }
-    )
-  );
-
-  passport.use(
-    "google",
-    new GoogleStrategy(
-      {
-        clientID:
-          "663921714149-q3f5pa628qj80g0inlj0sntv43uhcglb.apps.googleusercontent.com",
-        clientSecret: "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",
-        callbackURL: "http://localhost:8080/api/sessions/auth/google/callback",
-      },
-      async function (accessToken, refreshToken, profile, done) {
-        try {
-          const userDB = await usersManager.findByEmail(profile._json.email);
-          // login
-          if (userDB) {
-            if (userDB.isGoogle) {
-              return done(null, userDB);
-            } else {
-              return done(null, false);
-            }
-          }
-          // signup
-          const infoUser = {
-            first_name: profile._json.given_name,
-            last_name: profile._json.family_name,
-            email: profile._json.email,
-            password: " ",
-            isGoogle: true,
-          };
-          const createdUser = await usersManager.createOne(infoUser);
-          done(null, createdUser);
-        } catch (error) {
-          done(error);
-        }
-      }
-    )
-  );
-  
-  const fromCookies = (req) => {
-    return req.cookies.token;
-  };
-  
-  // JWT
-  passport.use(
-    "jwt",
-    new JWTStrategy(
-      {
-        //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        jwtFromRequest: ExtractJwt.fromExtractors([fromCookies]),
-        secretOrKey: "secretJWT",
-      },
-      async function (jwt_payload, done) {
-        done(null, jwt_payload);
       }
     )
   );
