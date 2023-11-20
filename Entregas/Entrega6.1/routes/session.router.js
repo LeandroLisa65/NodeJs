@@ -121,7 +121,7 @@ router.get(
     (req, res) => {
       // Successful authentication, redirect home.
       console.log(req);
-      res.redirect("/profile");
+      res.redirect("/api/views/products");
     }
   );
 

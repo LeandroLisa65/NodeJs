@@ -2,6 +2,8 @@ import passport from "passport";
 import { userManager } from './dao/Dao/MongoDb/UserManager.js';
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
 import { hashData, compareData } from "./utils.js";
 
 passport.use('signup', new LocalStrategy
@@ -87,6 +89,50 @@ passport.use(
     )
   );
 
+  passport.use(
+    "google",
+    new GoogleStrategy(
+      {
+        clientID: "239873728044-rsa4iqjntsgd5a7testsoj7evifdqv1g.apps.googleusercontent.com",
+        clientSecret: "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",
+        callbackURL: "http://localhost:8080/api/session/auth/google/callback",
+      },
+      async function (accessToken, refreshToken, profile, done) {
+        try {
+          const user = await userManager.getUserByEmail(profile._json.email)
+          if(!user){
+              let newUser = signupGoogle(profile);
+              const result = await userManager.addUser(newUser)
+              return done(null, result)
+          }
+          
+          return done(null, user)
+        } catch (error) {
+          done(error);
+        }
+      }
+    )
+  );
+  
+  const fromCookies = (req) => {
+    return req.cookies.token;
+  };
+  
+  // JWT
+  passport.use(
+    "jwt",
+    new JWTStrategy(
+      {
+        //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        jwtFromRequest: ExtractJwt.fromExtractors([fromCookies]),
+        secretOrKey: "secretJWT",
+      },
+      async function (jwt_payload, done) {
+        done(null, jwt_payload);
+      }
+    )
+  );
+
 passport.serializeUser( (user,done) => {
     done(null,user._id);
 });
@@ -126,6 +172,16 @@ const signupGithub = (profile) => {
     email: email,
     password: " ",
     isGithub: true,
+  };
+}
+
+const signupGoogle = (profile) => {
+  return {
+    first_name: profile._json.given_name,
+    last_name: profile._json.family_name,
+    email: profile._json.email,
+    password: " ",
+    isGoogle: true,
   };
 }
 
