@@ -3,6 +3,8 @@ import productRouter from './routes/products.router.js';
 import cartRouter from './routes/cart.router.js';
 import viewsRouter from "./routes/views.router.js";
 import sessionRouter from './routes/session.router.js';
+import usersRouter from "./routes/users.router.js";
+import clientsRouter from "./routes/clients.router.js";
 import { __dirname } from "./utils.js";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
@@ -49,6 +51,9 @@ app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 app.use("/api/views", viewsRouter);
 app.use("/api/session", sessionRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/clients", clientsRouter);
+
 app.use('/', (req, res) => {
   res.redirect('/api/views/login');
 });
