@@ -110,4 +110,15 @@ router.get("/callback", passport.authenticate('github'), (req, res) => {
 res.redirect("/api/views/products");
 });
 
+router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+  
+  router.get(
+    "/auth/google/callback",
+    passport.authenticate("google", { failureRedirect: "/api/views/error" }),
+    (req, res) => {
+      console.log(req);
+      res.redirect("/api/views/products");
+    }
+  );
+  
 export default router;
