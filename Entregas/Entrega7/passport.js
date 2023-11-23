@@ -62,77 +62,81 @@ passport.use(
     }
 }));
 
-passport.use(
-    'github',
-    new GithubStrategy(
-      {
-        clientID: "Iv1.da286efddf237130",
-        clientSecret: "e1531c90402b8c7d75399363092133df3638e48c",
-        callbackURL: "http://localhost:8080/api/session/callback",
-        scope: ['user:email']
-      },
-      async (accessToken, refreshToken, profile, done) => {
-        try {
-          const user = await userManager.getUserByEmail(profile._json.email)
-          if(!user){
-              let newUser = signupGithub(profile);
-              const result = await userManager.addUser(newUser)
-              return done(null, result)
-          }
-          
-          return done(null, user)
-          
-        } catch (error) {
-          done(error);
+/*passport.use(
+  'github',
+  new GithubStrategy(
+    {
+      clientID: "Iv1.da286efddf237130",
+      clientSecret: "e1531c90402b8c7d75399363092133df3638e48c",
+      callbackURL: "http://localhost:8080/api/session/callback",
+      scope: ['user:email']
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        const user = await userManager.getUserByEmail(profile._json.email)
+        if(!user){
+            let newUser = signupGithub(profile);
+            const result = await userManager.addUser(newUser)
+            return done(null, result)
         }
+        
+        return done(null, user)
+        
+      } catch (error) {
+        done(error);
       }
-    )
-  );
+    }
+  )
+);*/
 
-  passport.use(
-    "google",
-    new GoogleStrategy(
-      {
-        clientID: "239873728044-rsa4iqjntsgd5a7testsoj7evifdqv1g.apps.googleusercontent.com",
-        clientSecret: "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",
-        callbackURL: "http://localhost:8080/api/session/auth/google/callback",
-      },
-      async function (accessToken, refreshToken, profile, done) {
-        try {
-          const user = await userManager.getUserByEmail(profile._json.email)
-          if(!user){
-              let newUser = signupGoogle(profile);
-              const result = await userManager.addUser(newUser)
-              return done(null, result)
-          }
-          
-          return done(null, user)
-        } catch (error) {
-          done(error);
+passport.use(
+  "google",
+  new GoogleStrategy(
+    {
+      clientID: "239873728044-rsa4iqjntsgd5a7testsoj7evifdqv1g.apps.googleusercontent.com",
+      clientSecret: "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",
+      callbackURL: "http://localhost:8080/api/session/auth/google/callback",
+    },
+    async function (accessToken, refreshToken, profile, done) {
+      try {
+        const user = await userManager.getUserByEmail(profile._json.email)
+        if(!user){
+            let newUser = signupGoogle(profile);
+            const result = await userManager.addUser(newUser)
+            return done(null, result)
         }
+        
+        return done(null, user)
+      } catch (error) {
+        done(error);
       }
-    )
-  );
+    }
+  )
+);
+
+const cookieExtractor = req => {
+
+  if (req && req.cookies)
+      return req.cookies.token;
   
-  const fromCookies = (req) => {
-    return req.cookies.token;
-  };
-  
-  // JWT
-  passport.use(
-    "jwt",
-    new JWTStrategy(
-      {
-        //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        jwtFromRequest: ExtractJwt.fromExtractors([fromCookies]),
-        secretOrKey: "secretJWT",
-      },
-      async function (jwt_payload, done) {
-        console.log(jwt_payload)
-        done(null, jwt_payload);
-      }
-    )
-  );
+  return null;
+};
+
+
+passport.use('current', new JWTStrategy(
+  {
+    jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+    secretOrKey: "secretJWT",
+  }
+, async (jwt_payload, done) => {
+    try{
+      console.log(jwt_payload)
+      return done(null, jwt_payload.user);
+    }catch(error){
+        return done(error);
+    }
+}))
+
 
 passport.serializeUser( (user,done) => {
     done(null,user._id);
@@ -147,7 +151,7 @@ try {
 }
 });
 
-const signupGithub = (profile) => {
+/*const signupGithub = (profile) => {
   let name = '';
   let last_name = '';
   let email = ' ';
@@ -174,7 +178,7 @@ const signupGithub = (profile) => {
     password: " ",
     isGithub: true,
   };
-}
+}*/
 
 const signupGoogle = (profile) => {
   return {

@@ -18,7 +18,6 @@ export const compareData = async (data, hashedData) => {
 
 export const generateToken = (user) => {
     const token = jwt.sign({user}, SECRET_KEY_JWT, { expiresIn: 300 });
-    console.log(token)
     return token;
 };
   

@@ -2,12 +2,14 @@ import { Router } from 'express';
 import { userManager } from '../dao/Dao/MongoDb/UserManager.js';
 import { hashData, compareData, generateToken } from '../utils.js';
 import passport from '../passport.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
-router.post("/signup", passport.authenticate('signup'), async (req, res) => {
-    const { first_name, last_name, email, password } = req.body;
-    if (!first_name || !last_name || !email || !password) {
+router.post("/signup", async (req, res) => {
+
+    const { first_name, last_name, email, password, age } = req.body;
+    if (!first_name || !last_name || !email || !password || !age) {
       return res.status(400).json({ message: "All fields are required" });
     }
     try {
@@ -15,17 +17,17 @@ router.post("/signup", passport.authenticate('signup'), async (req, res) => {
       const createdUser = await userManager.addUser({
         ...req.body,
         password: hashedPassword,
-        role: "PREMIUM",
+        role: "User",
       });
+
       res.status(200).json({ message: "User created", user: createdUser });
     } catch (error) {
       res.status(500).json({ error });
     }
   });
   
-  router.post("/login", passport.authenticate('login'), async (req, res) => {
+  router.post("/login", async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body)
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -40,15 +42,13 @@ router.post("/signup", passport.authenticate('signup'), async (req, res) => {
         return res.status(401).json({ message: "Password is not valid" });
       }
   
-      //jwt
-      const token = generateToken(user);
+      const token = generateToken({ user });
 
       res
         .status(200)
-        .cookie("token", token, { httpOnly: true, maxAge: 60000 })
+        .cookie("token", token, { httpOnly: true })
         .json({ message: "Bienvenido", token });
     } catch (error) {
-      console.log(error);
       res.status(500).json({ error });
     }
   });
@@ -133,7 +133,6 @@ router.get(
 "/auth/google/callback",
 passport.authenticate("google", { failureRedirect: "/api/views/error" }),
 (req, res) => {
-    // Successful authentication, redirect home.
     console.log(req);
     res.redirect("/api/views/products");
 }
@@ -173,5 +172,19 @@ router.post('/recover', async (req, res) => {
         throw error;
     }
 });
+
+router.get('/current'
+, authMiddleware(['PUBLIC'])
+, passport.authenticate('current', { session: false })
+,  async (req, res) => {
+  try{
+    const user = req.user;
+    console.log('user' + user);
+
+    res.json( { message: "Current User", user: user });
+  }catch(error){
+      res.json(error.message)
+  }
+})
 
 export default router;
