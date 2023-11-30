@@ -1,0 +1,25 @@
+<div>
+    <form id="form">
+        Título: <input type="text" name="title" id="title">
+        Descripción: <input type="text" name="description" id="description">
+        Categoria: <input type="text" name="description" id="category">
+        Precio: <input type="number" name="price" id="price">
+        Url Imágen: <input type="text" name="thumbnail" id="thumbnail">
+        Código: <input type="text" name="code" id="code">
+        Stock: <input type="number" name="stock" id="stock">
+        <input type="submit" value="Nuevo Producto">
+    </form>
+</div>
+<br/>
+<div>
+    <form id="formDelete">
+        Id: <input type="text" name="id" id="id">
+        <input type="submit" value="Eliminar Producto">
+    </form>
+</div>
+<br/>
+<div id="productList">
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
