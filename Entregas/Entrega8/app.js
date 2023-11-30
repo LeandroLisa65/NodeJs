@@ -5,7 +5,7 @@ import viewsRouter from "./routes/views.router.js";
 import sessionRouter from './routes/session.router.js';
 import usersRouter from "./routes/users.router.js";
 import clientsRouter from "./routes/clients.router.js";
-import { __dirname } from "./config/utils.js";
+import { __dirname } from './utils.js';
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import { productManager } from './dao/mongo/ProductManager.js';

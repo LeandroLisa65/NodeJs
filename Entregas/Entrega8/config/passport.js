@@ -4,7 +4,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
-import { hashData, isPasswordValid } from "./utils.js";
+import { hashData, isPasswordValid } from "../utils.js";
 
 passport.use('signup', new LocalStrategy
 (

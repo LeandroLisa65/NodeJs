@@ -3,7 +3,7 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
-import configurationEnv from "./config.js";
+import configurationEnv from "./config/config.js";
 
 export const __dirname = dirname(fileURLToPath(import.meta.url));
 
