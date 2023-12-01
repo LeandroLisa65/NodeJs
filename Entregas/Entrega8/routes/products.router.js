@@ -7,7 +7,7 @@ const router = Router();
 router.get('/', async (req, res) => {
     try
     {
-        console.log('1')
+        console.log('hello')
         res.json(await productController.get(req, res))
     }catch(error){
         res.json({message: error});

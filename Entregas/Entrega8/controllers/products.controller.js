@@ -4,7 +4,6 @@ class ProductController {
     get = async (req, res) => {
         try
         {
-            console.log('hello')
             let queryPage = ''
             if (req.query.page) {
                 queryPage = parseInt(req.query.page);
@@ -12,24 +11,24 @@ class ProductController {
                     throw new Error('Invalid page number');
                 }
             }
-    
+
             let query = {}
-            if(req.query.query === undefined){ // query undefined
-                query = {}
-            }else if(req.query.query === 'true'){ // status === true
-                query.status = true
-            }else if(req.query.query === 'false'){ // status === false
-                query.status = false
-            }else{ // category === req.query.params
-                query.category = req.query.query
+
+            switch (true) {
+                case req.query.query === 'true':
+                case req.query.query === 'false':
+                    query.status = req.query.query === 'true';
+                    break;
+                case req.query.query !== 'true' && req.query.query !== 'false':
+                    query.category = req.query.query;
+                    break;
+                default:
+                    break;
             }
     
             let sort = null
-            if (req.query.sort === "asc") { // asc or desc
-                sort = { price: 1 };
-            } else if (req.query.sort === "desc") {
-                sort = { price: -1 };
-            }
+            if (req.query.sort === "asc" || req.query.sort === "desc")
+                sort = req.query.sort === "asc" ? { price: 1 } : { price: -1 };
     
             const options = {
                 limit: req.query.limit ? parseInt(req.query.limit) : 10,
@@ -41,18 +40,12 @@ class ProductController {
             let nextLink = ''
     
             const products = await productService.get(query, options)
+
             const { docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage } = products
 
-            if(query.status !== undefined){ // if query.status exists
-                hasPrevPage === false ? prevLink = null : prevLink = `/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
-                hasNextPage === false ? nextLink = null : nextLink = `/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
-            }else if(query.category !== undefined){ // if query.category exists
-                hasPrevPage === false ? prevLink = null : prevLink = `/products/${query.category}?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
-                hasNextPage === false ? nextLink = null : nextLink = `/products/${query.category}?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
-            }else{ // if there isn't query values
-                hasPrevPage === false ? prevLink = null : prevLink = `/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
-                hasNextPage === false ? nextLink = null : nextLink = `/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
-            }
+            this.#setPreviousPage(hasPrevPage, prevLink, prevPage, options, req, query);
+            this.#setNextPage(hasNextPage, nextLink, nextPage, options, req, query);
+
             return { products: docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink, session: req.user }
         }
         catch(error)
@@ -61,11 +54,42 @@ class ProductController {
         }
     }
 
+    #queryBuilder = (page, options, req) => {
+        return `/products?page=${parseInt(page)}&limit=${options.limit}&sort=${req.query.sort}`;
+    }
+
+    #setPreviousPage = (hasPrevPage, prevLink, prevPage, options, req, query) => {
+        switch (true) {
+            case query.status !== undefined:
+                hasPrevPage === false ? prevLink = null : prevLink = `${this.#queryBuilder(prevPage, options, req)}&query=${query.status}`
+                break;
+            case query.category !== undefined:
+                hasPrevPage === false ? prevLink = null : prevLink = `${this.#queryBuilder(prevPage, options, req)}&query=${query.category}`
+                break;
+            default:
+                hasPrevPage === false ? prevLink = null : prevLink = `${this.#queryBuilder(prevPage, options, req)}`
+                break;
+        }
+    }
+
+    #setNextPage = (hasNextPage, nextLink, nextPage, options, req, query) => {
+        switch (true) {
+            case query.status !== undefined:
+                hasNextPage === false ? nextLink = null : nextLink = `${this.#queryBuilder(nextPage, options, req)}&query=${query.status}`
+                break;
+            case query.category !== undefined:
+                hasNextPage === false ? nextLink = null : nextLink = `${this.#queryBuilder(nextPage, options, req)}&query=${query.category}`
+                break;
+            default:
+                hasNextPage === false ? nextLink = null : nextLink = `${this.#queryBuilder(nextPage, options, req)}`
+                break;
+        }
+    }
+
     getById = async (req, res) => {
         try
         {
-            const product = await productService.getById(req.params.pid)
-            return { product }
+            return { product: await productService.getById(req.params.pid) }
         }
         catch(error)
         {
@@ -76,10 +100,7 @@ class ProductController {
     create = async (req, res, next) => {
         try
         {
-            const product = req.body
-
-            const addedProduct = await productService.create(product)
-            return addedProduct
+            return await productService.create(req.body)
         }
         catch (error)
         {
@@ -90,14 +111,7 @@ class ProductController {
     update = async (req, res) => {
         try
         {
-            const product = req.body
-
-            if(req.user.user.role === 'premium' && req.user.user.email !== product.owner){
-                res.send({status: 'error', message: "You can't update products you don't own"})
-            }
-
-            const updatedProduct = await productService.update(req.params.pid, product)
-            return { updatedProduct }
+            return { updatedProduct: await productService.update(req.params.pid, req.body) }
         }
         catch (error)
         {
@@ -107,16 +121,8 @@ class ProductController {
 
     delete = async (req, res) => {
         try
-        {
-            const product = await productService.getById(req.params.pid)
-
-            if(req.user.user.role === 'premium' && req.user.user.email !== product.owner){
-                res.send({status: 'error', message: "You can't delete products you don't own"})
-            }
-
-            const deletedProduct = await productService.delete(req.params.pid)
-            
-            return { deletedProduct }
+        {           
+            return { deletedProduct: await productService.delete(req.params.pid) }
         }
         catch(error)
         {

@@ -33,6 +33,7 @@ router.post("/signup", async (req, res) => {
     }
     try {
       const user = await userManager.getUserByEmail(email);
+      console.log(user)
       if (!user) {
         return res.redirect("/signup");
       }
@@ -40,13 +41,14 @@ router.post("/signup", async (req, res) => {
       if (!await isPasswordValid(password, user.password)) {
         return res.status(401).json({ message: "Password is not valid" });
       }
-  
+      console.log()
       const token = generateToken({ user });
 
-      res
+      res.redirect("/api/views/products");
+      /*res
         .status(200)
         .cookie("token", token, { httpOnly: true })
-        .json({ message: "Bienvenido", token });
+        .json({ message: "Bienvenido", token });*/
     } catch (error) {
       res.status(500).json({ error });
     }
