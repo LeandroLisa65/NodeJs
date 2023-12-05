@@ -1,18 +1,11 @@
-import { cartService, productService } from '../repositoryservices/index.js'
+import { cartService } from '../repositoryservices/index.js'
 
 class CartController {
-    getById = async (req, res) => {
+
+    get = async (req, res, next) => {
         try
         {
-            const cart = await cartService.getById(req.params.cid)
-            if(!cart)
-            {
-                throw new Error('Could not find a cart with the ID: ' + req.params.cid)
-            }
-            else
-            {
-                return cart 
-            }
+            return await cartService.get();
         }
         catch(error)
         {  
@@ -20,11 +13,21 @@ class CartController {
         }
     }
 
-    create = async (req, res) => {
+    getById = async (req, res, next) => {
         try
         {
-            const createdCart = await cartService.create()
-            return { createdCart }
+            return await cartService.getById(req.params.cid);
+        }
+        catch(error)
+        {  
+            throw error
+        }
+    }
+
+    create = async (req, res, next) => {
+        try
+        {
+            return await cartService.create()
         }
         catch(error)
         {
@@ -32,17 +35,10 @@ class CartController {
         }
     }
 
-    addProduct = async (req, res) => {
+    addProduct = async (req, res, next) => {
         try
         {
-            const product = await productService.getById(req.params.pid)
-
-            if(req.user.user.role === 'premium' && req.user.user.email === product.owner){
-                res.send({status: 'error', message: "You can't add products to your cart that you own"})
-            }
-
-            const addedProduct = await cartService.add(req.params.cid, req.params.pid)
-            return addedProduct 
+            return await cartService.add(req.params.cid, req.params.pid) 
         }
         catch (error)
         {
@@ -50,12 +46,10 @@ class CartController {
         }
     }
 
-    update = async (req, res) => {
+    update = async (req, res, next) => {
         try
         {
-            const { products } = req.body
-            const updatedCart = await cartService.update(req.params.cid, products)
-            return { updatedCart }
+            return await cartService.update(req.params.cid, req.body)
         }
         catch(error)
         {
@@ -63,12 +57,12 @@ class CartController {
         }
     }
 
-    updateQuantity = async (req, res) => {
+    updateQuantity = async (req, res, next) => {
         try
         {
-            const quantity = req.body.quantity
-            const updatedProduct = await cartService.updateQuantity(req.params.cid, req.params.pid, quantity)
-            return { updatedProduct }
+            console.log(req.params)
+            console.log(req.body)
+            return await cartService.updateQuantity(req.params.cid, req.params.pid, req.body.quantity)
         }
         catch(error)
         {
@@ -79,8 +73,7 @@ class CartController {
     deleteProduct = async (req,res) => {
         try
         {
-            const deletedProduct = await cartService.delete(req.params.cid, req.params.pid)
-            return { deletedProduct }
+            return await cartService.delete(req.params.cid, req.params.pid)
         }
         catch(error)
         {
@@ -91,8 +84,7 @@ class CartController {
     deleteAllProducts = async (req,res) => {
         try
         {
-            const deletedProducts = await cartService.deleteAll(req.params.cid)
-            return { deletedProducts }
+            return await cartService.deleteAll(req.params.cid)
         }
         catch(error)
         {
@@ -101,4 +93,6 @@ class CartController {
     }
 }
 
-module.exports = new CartController()
+const cartController = new CartController();
+
+export default cartController;

@@ -1,7 +1,9 @@
 import { productService } from '../repositoryservices/index.js'
-
+import CustomError from '../utils/CustomErrors/CustomError.js'
+import EErrors from '../utils/CustomErrors/EErrors.js'
+import { generateProductErrorInfo }from '../utils/CustomErrors/info.js'
 class ProductController {
-    get = async (req, res) => {
+    get = async (req, res, next) => {
         try
         {
             let queryPage = ''
@@ -40,7 +42,7 @@ class ProductController {
             let nextLink = ''
     
             const products = await productService.get(query, options)
-
+            console.log(products)
             const { docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage } = products
 
             this.#setPreviousPage(hasPrevPage, prevLink, prevPage, options, req, query);
@@ -86,7 +88,7 @@ class ProductController {
         }
     }
 
-    getById = async (req, res) => {
+    getById = async (req, res, next) => {
         try
         {
             return { product: await productService.getById(req.params.pid) }
@@ -100,18 +102,30 @@ class ProductController {
     create = async (req, res, next) => {
         try
         {
-            return await productService.create(req.body)
+            const product = req.body
+
+            if(!product.title || !product.description || !product.price || !product.code || !product.stock || !product.category || !product.status)
+            {
+                CustomError.createError({
+                    name: 'Product error',
+                    cause: generateProductErrorInfo({title: product.title, code: product.code, description: product.description, price: product.price, stock: product.stock, category: product.category, status: product.status}),
+                    message: 'Error trying to create a product',
+                    code: EErrors.INVALID_TYPE_ERROR
+                })
+            }
+
+            return await productService.create(product)
         }
-        catch (error)
+        catch(error)
         {
             next(error)
         }
     }
 
-    update = async (req, res) => {
+    update = async (req, res, next) => {
         try
         {
-            return { updatedProduct: await productService.update(req.params.pid, req.body) }
+            return await productService.update(req.params.pid, req.body)
         }
         catch (error)
         {
@@ -119,10 +133,10 @@ class ProductController {
         }
     }
 
-    delete = async (req, res) => {
+    delete = async (req, res, next) => {
         try
         {           
-            return { deletedProduct: await productService.delete(req.params.pid) }
+            return await productService.delete(req.params.pid)
         }
         catch(error)
         {
@@ -132,4 +146,5 @@ class ProductController {
 }
 
 const productController = new ProductController();
+
 export default productController;

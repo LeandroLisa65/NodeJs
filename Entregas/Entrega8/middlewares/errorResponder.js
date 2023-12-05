@@ -1,15 +1,13 @@
-const errorResponder = (error, request, response, next) => {
-    response.header("Content-Type", 'application/json');
+import EErrors from '../utils/CustomErrors/EErrors.js'
 
-    console.log("Middleware Error Hadnling");
-    const errStatus = error.statusCode || 500;
-    const errMsg = error.message || 'Something went wrong';
-    response.status(errStatus).json({
-        success: false,
-        status: errStatus,
-        message: errMsg,
-        stack: error.stack ? error.stack : {}
-    })
-}
+function errorHandler(error, req, res, next){
+    switch (error.code) {
+        case EErrors.INVALID_TYPE_ERROR: 
+            res.status(400).send({status: "error", error: error});
+            break;
+        default: 
+            res.status(500).send({status: "error", error: error});
+    }
+};
 
-export default errorResponder;
+export default errorHandler;

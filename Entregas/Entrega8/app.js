@@ -5,20 +5,19 @@ import viewsRouter from "./routes/views.router.js";
 import sessionRouter from './routes/session.router.js';
 import usersRouter from "./routes/users.router.js";
 import clientsRouter from "./routes/clients.router.js";
-import { __dirname } from './utils.js';
+import { __dirname } from './dirname.js';
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import { productManager } from './dao/mongo/ProductManager.js';
 import { chatManager } from './dao/mongo/ChatManager.js';
-import errorLogger from './middlewares/errorLogger.js';
 import invalidPathHandler from "./middlewares/errorPathHandler.js";
-import errorResponder from './middlewares/errorResponder.js';
 import "./config/configDB.js";
 import session from 'express-session'
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
 import "./config/passport.js";
 import passport from 'passport';
+import errorHandler from './middlewares/errorResponder.js'
 
 const app = express();
 
@@ -97,7 +96,7 @@ socketServer.on("connection", async (socket) => {
 
 });
 
-//app.use(errorLogger);
+app.use(errorHandler)
 
 //app.use(errorResponder);
 

@@ -1,31 +1,33 @@
-class ProductRepository{
-    constructor(dao){
+class ProductRepository
+{
+    constructor(dao)
+    {
         this.dao = dao
     }
 
-    async create(product){
-        const result = this.dao.addProduct(product)
-        return result
+    async create(product)
+    {
+        return this.dao.create(product)
     }
 
-    async get(query, options){
-        const result = this.dao.getProducts(query, options)
-        return result
+    async get(query, options)
+    {
+        return this.dao.get(query, options)
     }
 
-    async getById(pid){
-        const result = this.dao.getProductById(pid)
-        return result
+    async getById(pid)
+    {
+        return this.dao.getById(pid)
     }
 
     async update(pid, product){
-        const result = this.dao.updateProduct(pid, product)
+        const result = this.dao.update(pid, product)
         return result
     }
 
-    async delete(pid){
-        const result = this.dao.deleteProduct(pid)
-        return result
+    async delete(pid)
+    {
+        return this.dao.delete(pid)
     }
 }
 

@@ -2,7 +2,7 @@ import { productModel } from './models/products.model.js';
 
 class ProductMongoManager {
 
-    async getProducts(query, options)
+    async get(query, options)
     {
         try
         {
@@ -14,7 +14,7 @@ class ProductMongoManager {
         }
     }
 
-    async getProductById(pid)
+    async getById(pid)
     {
         try
         {
@@ -26,7 +26,7 @@ class ProductMongoManager {
         }
     }
     
-    async createProduct(product)
+    async create(product)
     {
         try
         {
@@ -38,10 +38,10 @@ class ProductMongoManager {
         }
     };
 
-    async deleteProduct(id) {
-        try {
-            await productModel.deleteOne({_id:id});
-            return `Product with id ${id} DELETED`;
+    async delete(id) {
+        try 
+        {
+            return await productModel.deleteOne({_id:id});
         }
         catch(error)
         {
@@ -49,12 +49,11 @@ class ProductMongoManager {
         }
     };
 
-    async updateProduct(id, updatedProduct)
+    async update(id, updatedProduct)
     {
         try 
         {
-            await productModel.updateOne({_id:id}, updatedProduct);
-            return `Product with id ${id} UPDATED`;
+            return await productModel.updateOne({_id:id}, updatedProduct);
         }
         catch(error)
         {

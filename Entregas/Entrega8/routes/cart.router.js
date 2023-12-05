@@ -1,14 +1,12 @@
+import cartController  from '../controllers/carts.controller.js';
 import { Router } from 'express';
-import { cartManager } from '../dao/mongo/CartManager.js';
 
 const router = Router();
 
-router.get('/',async (req, res, next) => {
+router.get('/',async (req, res, next) =>{
     try 
     {
-    const queryObj = req.query;
-    const carts = await cartManager.getCarts(queryObj);
-    res.status(200).json({message:'Carts found', carts: carts})
+        res.status(200).json(await cartController.get())
     }
     catch(error)
     {
@@ -19,10 +17,7 @@ router.get('/',async (req, res, next) => {
 router.get('/:cid',async (req, res, next) =>{
     try 
     {
-    const response = await cartManager.getCartById(req.params.cid);
-    if(!response)
-        res.status(404).json({message:response});
-    res.status(200).json({message:'Cart found', cart: response})
+        res.status(200).json(await cartController.getById(req))
     }
     catch(error)
     {
@@ -33,8 +28,7 @@ router.get('/:cid',async (req, res, next) =>{
 router.post('/',async (req, res, next) =>{
     try 
     {
-    const response = await cartManager.createCart();
-    res.status(200).json({message:response});
+        res.status(200).json(await cartController.create());
     }
     catch(error)
     {
@@ -45,10 +39,7 @@ router.post('/',async (req, res, next) =>{
 router.post('/:cid/product/:pid',async (req, res, next) =>{
     try 
     {
-    const {cid} = req.params;
-    const {pid} = req.params;
-    const response = await cartManager.addProduct(cid,pid);
-    res.status(200).json({message:response});
+        res.status(200).json(await cartController.addProduct(req));
     }
     catch(error)
     {
@@ -59,8 +50,7 @@ router.post('/:cid/product/:pid',async (req, res, next) =>{
 router.delete('/:cid/products/:pid', async (req, res, next) => {
     try
     {
-        const response = await cartManager.deleteProductFromCart(req.params.cid, req.params.pid);
-        res.status(200).json({message:response});
+        res.status(200).json(await cartController.deleteProduct(req));
     }
     catch(error)
     {
@@ -71,14 +61,8 @@ router.delete('/:cid/products/:pid', async (req, res, next) => {
 router.put('/:cid', async (req, res, next) => {
     try
     {
-        const { products } = req.body
-
-        const response = await cartManager.updateCart(req.params.cid, products)
-
-        if(!response)
-            res.status(404).json({message:response});
-        
-        res.status(200).json({message:'Cart Updated', cart: {}})
+        console.log('hello')
+        res.status(200).json(await cartController.update(req))
     }catch(error)
     {
         next(error);
@@ -86,29 +70,25 @@ router.put('/:cid', async (req, res, next) => {
 })
 
 router.put('/:cid/products/:pid', async (req, res, next) => {
-    try{
-        const quantity = req.body.quantity
-        const response = await cartManager.updateQuantity(req.params.cid, req.params.pid, quantity)
+    try
+    {     
+        const resp = await cartController.updateQuantity(req)
+        console.log(resp)
+        console.log('fin')
 
-        if(!response)
-            res.status(404).json({message:response});
-        
-        res.status(200).json({message:response});
-    }catch(error)
+        res.status(200).json(resp);
+    }
+    catch(error)
     {
+        console.log(error)
         next(error);
     }
 })
 
 router.delete('/:cid', async (req, res, next) => {
     try
-    {
-        const response = await cartManager.deleteAllProductsFromCart(req.params.cid);
-
-        if(!response)
-            res.status(404).json({message:response});
-    
-        res.status(200).json({message:response});
+    {   
+        res.status(200).json(await cartController.deleteAllProducts(req));
     }
     catch(error)
     {

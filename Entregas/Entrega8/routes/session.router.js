@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { userManager } from '../dao/mongo/UserManager.js';
-import { hashData, isPasswordValid, generateToken } from '../utils.js';
+import { hashData, isPasswordValid } from '../utils/bcrypt.js';
+import { generateToken } from '../utils/jwt.js'
 import passport from '../config/passport.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 

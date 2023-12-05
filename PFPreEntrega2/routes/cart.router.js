@@ -6,8 +6,8 @@ const router = Router();
 router.get('/',async (req, res, next) => {
     try 
     {
-    const queryObj = req.query;
-    const carts = await cartManager.getCarts(queryObj);
+
+    const carts = await cartManager.getCarts();
     res.status(200).json({message:'Carts found', carts: carts})
     }
     catch(error)

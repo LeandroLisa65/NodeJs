@@ -65,8 +65,9 @@ class CartManager {
         try
         {
             const cart = await cartModel.findOne({_id: cid})
-            const index = cart.products.findIndex(product => product.product == pid)
-
+            console.log(cart)
+            const index = cart.products.findIndex(product => product._id == pid)
+            console.log(index)
             if(index === -1){
                 return null
             }else{
