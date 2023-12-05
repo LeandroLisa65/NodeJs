@@ -1,63 +1,49 @@
 import productController  from '../controllers/products.controller.js';
-import { Router } from 'express';
+import RouterClass from './RouterClass.js'
+class ProductRouter extends RouterClass {
+    init(){
+        this.get('/', ['PUBLIC'], async (req, res) => {
+            try{
+                console.log('hola')
+                res.sendSuccess(await productController.get(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
 
-const productRouter = Router();
+        this.get('/:pid', ['PUBLIC'], async (req, res) => {
+            try{
+                res.sendSuccess(await productController.getById(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
 
-productRouter.get('/', async (req, res, next) => {
-    try
-    {
-        console.log('hola')
-        res.status(200).json(await productController.get(req, res, next))
-    }
-    catch(error)
-    {
-        next(error);
-    }
-})
+        this.post('/', ['PUBLIC'], async (req, res, next) => {
+            try{
+                res.sendSuccess(await productController.create(req, res, next))
+            }catch(error){
+                // errorHandler
+            }
+        })
 
-productRouter.get('/:pid',async (req, res, next)=>{
-    try 
-    {
-        res.status(200).json(await productController.getById(req, res, next))
-    }
-    catch(error)
-    {
-        next(error);
-    }
-})
+        this.put('/:pid', ['PUBLIC'], async (req, res) => {
+            try{
+                res.sendSuccess(await productController.update(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
 
-productRouter.post('/',async (req, res, next)=>{
-    try 
-    {
-        res.status(200).json(await productController.create(req, res, next));
+        this.delete('/:pid', ['PUBLIC'], async (req, res) => {
+            try{
+                res.sendSuccess(await productController.delete(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
     }
-    catch(error)
-    {
-        next(error);
-    }
-})
-
-productRouter.put('/:pid',async (req, res, next)=>{
-    try 
-    {
-        res.status(200).json(await productController.update(req, res, next));
-    }
-    catch(error)
-    {
-        next(error);
-    }
-})
-
-productRouter.delete('/:pid',async (req, res, next)=>{
-    try 
-    {
-        res.status(200).json(await productController.delete(req, res, next));
-    }
-    catch(error)
-    {
-        next(error);
-    }
-})
+}
 
 
-export default productRouter;
+export default ProductRouter;

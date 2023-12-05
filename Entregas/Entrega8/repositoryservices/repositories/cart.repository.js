@@ -9,7 +9,7 @@ class CartRepository{
     }
 
     async add(cid, pid){
-        const result = await this.dao.addProductToCart(cid, pid)
+        const result = await this.dao.addProduct(cid, pid)
         return result
     }
 

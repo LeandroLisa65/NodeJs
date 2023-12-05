@@ -1,6 +1,6 @@
 import express from 'express';
-import productRouter from './routes/products.router.js';
-import cartRouter from './routes/cart.router.js';
+//import productRouter from './routes/products.router.js';
+//import cartRouter from './routes/cart.router.js';
 import viewsRouter from "./routes/views.router.js";
 import sessionRouter from './routes/session.router.js';
 import usersRouter from "./routes/users.router.js";
@@ -18,7 +18,7 @@ import MongoStore from 'connect-mongo';
 import "./config/passport.js";
 import passport from 'passport';
 import errorHandler from './middlewares/errorResponder.js'
-
+import mainRouter from './routes/index.js'
 const app = express();
 
 app.use(express.json());
@@ -46,8 +46,9 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
 //routes
-app.use('/api/products', productRouter);
-app.use('/api/carts', cartRouter);
+app.use(mainRouter)
+//app.use('/api/products', productRouter);
+//app.use('/api/carts', cartRouter);
 app.use("/api/views", viewsRouter);
 app.use("/api/session", sessionRouter);
 app.use("/api/users", usersRouter);

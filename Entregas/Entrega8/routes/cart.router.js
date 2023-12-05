@@ -1,99 +1,75 @@
 import cartController  from '../controllers/carts.controller.js';
-import { Router } from 'express';
+import RouterClass from './RouterClass.js'
+class CartRouter extends RouterClass {
+    init(){
+        this.get('/', ['PUBLIC'], async (req, res) => {
+            try{
+                const payload = await cartController.get(req, res)
+                res.sendSuccess(payload)
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
 
-const router = Router();
+        this.get('/:cid', ['PUBLIC'], async (req, res) => {
+            try{
+                const payload = await cartController.getById(req, res)
+                res.sendSuccess(payload)
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
 
-router.get('/',async (req, res, next) =>{
-    try 
-    {
-        res.status(200).json(await cartController.get())
-    }
-    catch(error)
-    {
-        next(error);
-    }
-})
+        this.post('/', ['PUBLIC'], async (req, res) => {
+            try{
+                res.sendSuccess(await cartController.create(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
 
-router.get('/:cid',async (req, res, next) =>{
-    try 
-    {
-        res.status(200).json(await cartController.getById(req))
-    }
-    catch(error)
-    {
-        next(error);
-    }
-})
+        this.post('/:cid/product/:pid', ['PUBLIC'], async (req, res) => {
+            try{
+                console.log('hola')
+                res.sendSuccess(await cartController.addProduct(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
 
-router.post('/',async (req, res, next) =>{
-    try 
-    {
-        res.status(200).json(await cartController.create());
-    }
-    catch(error)
-    {
-        next(error);s
-    }
-})
+        this.put('/:cid', ['PUBLIC'], async (req, res) => {
+            try{
+                res.sendSuccess(await cartController.update(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
 
-router.post('/:cid/product/:pid',async (req, res, next) =>{
-    try 
-    {
-        res.status(200).json(await cartController.addProduct(req));
-    }
-    catch(error)
-    {
-        next(error);
-    }
-})
+        this.put('/:cid/products/:pid', ['PUBLIC'], async (req, res) => {
+            try{
+                res.sendSuccess(await cartController.updateQuantity(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
 
-router.delete('/:cid/products/:pid', async (req, res, next) => {
-    try
-    {
-        res.status(200).json(await cartController.deleteProduct(req));
-    }
-    catch(error)
-    {
-        next(error);
-    }
-})
+        this.delete('/:cid/products/:pid', ['PUBLIC'], async (req, res) => {
+            try{
+                res.sendSuccess(await cartController.deleteProduct(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
 
-router.put('/:cid', async (req, res, next) => {
-    try
-    {
-        console.log('hello')
-        res.status(200).json(await cartController.update(req))
-    }catch(error)
-    {
-        next(error);
+        
+        this.delete('/:cid', ['PUBLIC'], async (req, res) => {
+            try{
+                res.sendSuccess(await cartController.deleteAllProducts(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
     }
-})
+}
 
-router.put('/:cid/products/:pid', async (req, res, next) => {
-    try
-    {     
-        const resp = await cartController.updateQuantity(req)
-        console.log(resp)
-        console.log('fin')
-
-        res.status(200).json(resp);
-    }
-    catch(error)
-    {
-        console.log(error)
-        next(error);
-    }
-})
-
-router.delete('/:cid', async (req, res, next) => {
-    try
-    {   
-        res.status(200).json(await cartController.deleteAllProducts(req));
-    }
-    catch(error)
-    {
-        next(error);
-    }
-})
-
-export default router;
+export default CartRouter;
