@@ -42,7 +42,7 @@ class ProductController {
             let nextLink = ''
     
             const products = await productService.get(query, options)
-            console.log(products)
+
             const { docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage } = products
 
             this.#setPreviousPage(hasPrevPage, prevLink, prevPage, options, req, query);

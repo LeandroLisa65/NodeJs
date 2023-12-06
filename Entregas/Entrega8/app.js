@@ -1,6 +1,4 @@
 import express from 'express';
-//import productRouter from './routes/products.router.js';
-//import cartRouter from './routes/cart.router.js';
 import viewsRouter from "./routes/views.router.js";
 import sessionRouter from './routes/session.router.js';
 import usersRouter from "./routes/users.router.js";
@@ -15,6 +13,7 @@ import "./config/configDB.js";
 import session from 'express-session'
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
+import configurationEnv from './config/config.js';
 import "./config/passport.js";
 import passport from 'passport';
 import errorHandler from './middlewares/errorResponder.js'
@@ -26,12 +25,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser('SecretCookie'));
 
-const URI = "mongodb+srv://leandromlisa:6PD1FqTXbhmjEScT@cluster0.cxg4lof.mongodb.net/ecommerce?retryWrites=true&w=majority";
-
 app.use(
   session({
       store: new MongoStore({
-        mongoUrl: URI,
+        mongoUrl: process.env.MONGO_URI,
       }),
       secret: "secretSession",
       cookie: {maxAge:60000},
@@ -47,8 +44,6 @@ app.set("view engine", "handlebars");
 
 //routes
 app.use(mainRouter)
-//app.use('/api/products', productRouter);
-//app.use('/api/carts', cartRouter);
 app.use("/api/views", viewsRouter);
 app.use("/api/session", sessionRouter);
 app.use("/api/users", usersRouter);
@@ -57,7 +52,7 @@ app.use("/api/clients", clientsRouter);
 app.use('/', (req, res) => {
   res.redirect('/api/views/login');
 });
-const httpServer = app.listen(8080,()=>{
+const httpServer = app.listen(process.env.PORT,()=>{
     console.log('Escuchando 8080');
 })
 

@@ -4,7 +4,6 @@ class ProductRouter extends RouterClass {
     init(){
         this.get('/', ['PUBLIC'], async (req, res) => {
             try{
-                console.log('hola')
                 res.sendSuccess(await productController.get(req, res))
             }catch(error){
                 res.sendServerError(error.message)

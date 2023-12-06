@@ -5,12 +5,10 @@ const { mode } = program.opts();
 
 const get_mode = (mode) => {
     switch (mode) {
-        case 'test':
-            return './.env.testing';
         case 'prod':
-            return './.env.prod';
+            return './.env.production';
         default:
-            return './.env.dev';
+            return './.env.development';
     }
 }
 
@@ -22,6 +20,7 @@ dotenv.config({
 const configurationEnv = {
     mongo_uri: process.env.MONGO_URI
     , secret_key_jwt: process.env.SECRET_KEY_JWT
+    , port: process.env.PORT
 }
 
 export default configurationEnv;

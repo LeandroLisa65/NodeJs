@@ -30,7 +30,6 @@ class CartRouter extends RouterClass {
 
         this.post('/:cid/product/:pid', ['PUBLIC'], async (req, res) => {
             try{
-                console.log('hola')
                 res.sendSuccess(await cartController.addProduct(req, res))
             }catch(error){
                 res.sendServerError(error.message)

@@ -38,12 +38,10 @@ class RouterClass {
     }
 
     get(path, policies, ...callbacks){
-        console.log('get')
         this.router.get(path, this.handlePolicies(policies), this.generateRandomResponse, this.applyCallbacks(callbacks))
     }
 
     post(path, policies, ...callbacks){
-        console.log('post')
         this.router.post(path, this.handlePolicies(policies), this.generateRandomResponse, this.applyCallbacks(callbacks))
     }
 
