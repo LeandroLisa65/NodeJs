@@ -1,12 +1,9 @@
-const UserDto = require('../dto/user.dto')
-const { userService, cartService } = require('../service')
-const { createHash, isValidPassword } = require('../utils/bcrypt')
-const { generateToken, generateTokenResetPassword, decodeJWT } = require('../utils/jwt')
-const CustomError = require('../utils/CustomErrors/CustomError')
-const EErrors = require('../utils/CustomErrors/EErrors')
-const { generateUserErrorInfo } = require('../utils/CustomErrors/info')
-const transport = require('../utils/nodemailer')
-const lastConnection = require('../utils/lastConnection')
+import { userService, cartService } from '../repositoryservices/index.js'
+import { createHash, isValidPassword } from '../utils/bcrypt.js'
+import { generateToken, generateTokenResetPassword, decodeJWT } from '../utils/jwt.js'
+import CustomError from '../utils/CustomErrors/CustomError.js'
+import EErrors from '../utils/CustomErrors/EErrors.js'
+import { generateUserErrorInfo }from '../utils/CustomErrors/info.js'
 
 class UserController {
     register = async(req, res, next) => {
@@ -106,18 +103,6 @@ class UserController {
     
                 const token = generateTokenResetPassword(userDB)
 
-                let result = await transport.sendMail({
-                    from: 'Recover Password <agustingomezdev@gmail.com>',
-                    to: email,
-                    subject: 'Recover password',
-                    html: `
-                    <div>
-                        <h1>Recover your password</h1>
-                        <a href="http://localhost:5173/updatepassword?token=${token}">Click me to recover your password</a>
-                        <p>This link to reset your password is only valid for 1 hour</>
-                    </div>
-                    `
-                })
             }catch(error){
                 throw error
             }
@@ -140,75 +125,6 @@ class UserController {
             }
     }
 
-    premiumUser = async(req, res, next) => {
-        const { uid } = req.params
-
-        const userDB = await userService.getById(uid)
-        try{
-            if(!userDB)
-                CustomError.createError({
-                    name: 'Could not find user',
-                    cause: null,
-                    message: 'Error trying to find a user with the id: ' + uid,
-                    code: EErrors.INVALID_TYPE_ERROR
-            })
-
-            if(userDB.role === 'user'){
-                const requiredDocuments = ['identification', 'addressProof', 'accountStatement']
-                const hasAllDocuments = requiredDocuments.every(docName => userDB.documents.some(doc => doc.name === docName))
-    
-                if(!hasAllDocuments){
-                    CustomError.createError({
-                        name: 'Could not upgrade user to premium',
-                        cause: null,
-                        message: 'User must upload all required documents before upgrading to premium (identification, address proof & account statement)',
-                        code: EErrors.INVALID_TYPE_ERROR
-                    })
-                }
-            }
-
-            let newRole = ''
-            userDB.role === 'user' ? newRole = 'premium' : newRole = 'user'
-
-            const newRoleUser = await userService.update({_id: uid}, {role: newRole})
-            const result = await userService.getById(uid)
-            return result
-        }catch(error){
-            throw error
-        }
-    }
-
-    uploadDocument = async(req, res, next) => {
-        try{
-            const user = req.params.uid
-            const uploadedFiles = req.files
-
-            if(uploadedFiles['identification']){
-                const identificationFile = uploadedFiles['identification'][0]
-                await userService.updateDocuments(user, identificationFile.fieldname, identificationFile.path)
-            } 
-            
-            if(uploadedFiles['addressProof']){
-                const addressProofFile = uploadedFiles['addressProof'][0];
-                await userService.updateDocuments(user, addressProofFile.fieldname, addressProofFile.path)
-            } 
-            
-            if(uploadedFiles['accountStatement']){
-                const accountStatementFile = uploadedFiles['accountStatement'][0];
-                await userService.updateDocuments(user, accountStatementFile.fieldname, accountStatementFile.path)
-            } 
-
-            if(uploadedFiles['profile']){
-                const profileFile = uploadedFiles['profile'][0];
-                await userService.updateDocuments(user, profileFile.fieldname, profileFile.path)
-            } 
-
-            return 'Files uploaded successfully'
-        }catch(error){
-            throw error
-        }
-    }
-
     getUsers = async(req, res, next) => {
         try{
             const users = await userService.get()
@@ -221,33 +137,8 @@ class UserController {
             throw error
         }
     }
-
-    inactiveUsers = async(req, res, next) => {
-        try{
-            const option = { last_connection: { $lt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) } } // 2 days
-            const inactiveUsers = await userService.getInactiveUsers(option)
-            
-            const deletedUsers = []
-            inactiveUsers.map(async (user) => {
-                deletedUsers.push(user.email)
-                await userService.delete(user._id)
-
-                transport.sendMail({
-                    from: 'Account deleted <agustingomezdev@gmail.com>',
-                    to: user.email,
-                    subject: 'Your account has been deleted',
-                    html: `
-                    <div>
-                        <h1>Your account has been deleted due to inactivity in the last 2 days</h1>
-                    </div>
-                    `
-                })
-            })
-            return deletedUsers
-        }catch(error){
-            throw error
-        }
-    }
 }
 
-module.exports = new UserController()
+const userController = new UserController();
+
+export default userController;

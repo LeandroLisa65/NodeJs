@@ -1,10 +1,13 @@
+import UserDto from './../../dto/user.dto.js'
+
 class UserRepository{
     constructor(dao){
         this.dao = dao
     }
 
-    async create(user){
-        const result = await this.dao.addUser(user)
+    async create(newUser){
+        const userToAdd = new UserDto(newUser)
+        const result = await this.dao.addUser(userToAdd)
         return result
     }
 

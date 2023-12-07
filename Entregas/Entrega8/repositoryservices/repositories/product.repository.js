@@ -1,23 +1,24 @@
-class ProductRepository
-{
-    constructor(dao)
-    {
+import ProductDto from '../../dto/product.dto.js'
+
+class ProductRepository{
+    constructor(dao){
         this.dao = dao
     }
 
-    async create(product)
-    {
-        return this.dao.create(product)
+    async create(product){
+        const productToAdd = new ProductDto(product)
+        const result = this.dao.create(productToAdd)
+        return result
     }
 
-    async get(query, options)
-    {
-        return this.dao.get(query, options)
+    async get(query, options){
+        const result = this.dao.get(query, options)
+        return result
     }
 
-    async getById(pid)
-    {
-        return this.dao.getById(pid)
+    async getById(pid){
+        const result = this.dao.getById(pid)
+        return result
     }
 
     async update(pid, product){
@@ -25,9 +26,9 @@ class ProductRepository
         return result
     }
 
-    async delete(pid)
-    {
-        return this.dao.delete(pid)
+    async delete(pid){
+        const result = this.dao.delete(pid)
+        return result
     }
 }
 

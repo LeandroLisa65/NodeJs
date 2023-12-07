@@ -35,4 +35,4 @@ switch(process.env.PERSISTENCE)
             break;
 }
 
-export { CartDao, ProductDao, UserDao} 
+export { CartDao, ProductDao, UserDao } 
