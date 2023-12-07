@@ -4,7 +4,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
-import { hashData, isPasswordValid } from "../utils/bcrypt.js";
+import { hashData, isValidPassword } from './../utils/bcrypt.js';
 
 passport.use('signup', new LocalStrategy
 (
@@ -48,7 +48,7 @@ passport.use(
         if(!user)
             return done(null, false);
         
-        if(!isPasswordValid(password, user.password))
+        if(!isValidPassword(password, user.password))
             return done(null, false);
 
         const isAdmin = email == 'adminCoder@coder.com' && password == 'adminCod3r123';

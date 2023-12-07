@@ -1,20 +1,22 @@
 import { userService, cartService } from '../repositoryservices/index.js'
-import { createHash, isValidPassword } from '../utils/bcrypt.js'
-import { generateToken, generateTokenResetPassword, decodeJWT } from '../utils/jwt.js'
+import { hashData, isValidPassword } from './../utils/bcrypt.js'
+import { generateToken, decodeJWT } from '../utils/jwt.js'
 import CustomError from '../utils/CustomErrors/CustomError.js'
 import EErrors from '../utils/CustomErrors/EErrors.js'
 import { generateUserErrorInfo }from '../utils/CustomErrors/info.js'
+import UserDto from './../dto/user.dto.js'
 
 class UserController {
     register = async(req, res, next) => {
         try{
-            const { first_name, last_name, email, password, date_of_birth } = req.body
+            console.log(req.body);
+            const { first_name, last_name, email, password, age } = req.body
 
             if(!first_name || !last_name || !email){
                 CustomError.createError({
-                    name: 'User creation error',
+                    name: 'User error',
                     cause: generateUserErrorInfo({first_name, last_name, email}),
-                    message: 'Error trying to create a user',
+                    message: 'Error create user',
                     code: EErrors.INVALID_TYPE_ERROR
                 })
             }
@@ -22,19 +24,16 @@ class UserController {
             const user = await userService.getByEmail(email)
             if(user) return 'A user already exists with that email' 
 
-            let role = ''
-            email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD ? role = 'admin' : role = 'user'
-            
             const newUser = {
                 first_name,
                 last_name,
-                date_of_birth,
+                age,
                 email,
-                password: createHash(password),
-                cart: await cartService.create(),
-                role
+                password: await hashData(password),
+                cart: await cartService.create()
             }
             let result = await userService.create(newUser)
+            console.log(result)
             return { result }
         }catch(error){
             next(error)
@@ -55,7 +54,7 @@ class UserController {
                     })
                 }
                 
-                if(!isValidPassword(userDB, password)) return res.send({status: 'error', message: 'Your user password does not match the entered password'})
+                if(!(await isValidPassword(userDB, password))) return res.send({status: 'error', message: 'Your user password does not match the entered password'})
 
                 const access_token = generateToken(userDB)
 
@@ -72,7 +71,7 @@ class UserController {
         if(req.cookies[process.env.JWT_COOKIE_KEY]){
             const token = req.cookies[process.env.JWT_COOKIE_KEY]
             const user = decodeJWT(token, process.env.JWT_KEY)
-            lastConnection(user.user._id)
+            
             res.clearCookie(process.env.JWT_COOKIE_KEY)
             return 'Succesfully logged out'
         }else{
@@ -87,27 +86,6 @@ class UserController {
         return {first_name, last_name, email, role, date_of_birth, cart, _id, last_connection, documents }
     }
 
-    recoverPassword = async(req, res, next) => {
-        const { email } = req.body
-    
-        const userDB = await userService.getByEmail(email)
-            try{
-                if(!userDB){
-                    CustomError.createError({
-                        name: 'Could not find user',
-                        cause: null,
-                        message: 'Error trying to find a user with the email: ' + email,
-                        code: EErrors.INVALID_TYPE_ERROR
-                    })
-                }
-    
-                const token = generateTokenResetPassword(userDB)
-
-            }catch(error){
-                throw error
-            }
-    }
-
     updatePassword = async(req, res, next) => {
             const { token, password } = req.body
 
@@ -117,7 +95,7 @@ class UserController {
                 if(isValidPassword(user.user, password) == true)
                     res.send({status: 'error', message: "You can't enter the same password you had before"})
 
-                const hashedPassword = createHash(password)
+                const hashedPassword = hashData(password)
                 let result = await userService.update({_id: user.user._id}, {password: hashedPassword})
                 return result
             }catch(error){

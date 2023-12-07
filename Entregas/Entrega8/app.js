@@ -1,6 +1,5 @@
 import express from 'express';
 import viewsRouter from "./routes/views.router.js";
-import sessionRouter from './routes/session.router.js';
 import usersRouter from "./routes/users.router.js";
 import clientsRouter from "./routes/clients.router.js";
 import { __dirname } from './dirname.js';
@@ -45,7 +44,6 @@ app.set("view engine", "handlebars");
 //routes
 app.use(mainRouter)
 app.use("/api/views", viewsRouter);
-app.use("/api/session", sessionRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/clients", clientsRouter);
 

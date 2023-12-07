@@ -31,11 +31,6 @@ class UserRepository{
         return result
     }
 
-    async getByCartId(cid){
-        const result = await this.dao.getUserByCartId(cid)
-        return result
-    }
-
     async update(uid, data){
         const result = await this.dao.updateUser(uid, data)
         return result
@@ -43,16 +38,6 @@ class UserRepository{
 
     async delete(uid){
         const result = await this.dao.deleteUser(uid)
-        return result
-    }
-
-    async updateDocuments(uid, documentName, documentPath){
-        const result = await this.dao.updateUserDocuments(uid, documentName, documentPath)
-        return result
-    }
-    
-    async getInactiveUsers(option){
-        const result = await this.dao.getInactiveUsers(option)
         return result
     }
 }
