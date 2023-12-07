@@ -21,6 +21,7 @@ const configurationEnv = {
     mongo_uri: process.env.MONGO_URI
     , secret_key_jwt: process.env.SECRET_KEY_JWT
     , port: process.env.PORT
+    , jwt_cookie_key: process.env.JWT_COOKIE_KEY
 }
 
 export default configurationEnv;

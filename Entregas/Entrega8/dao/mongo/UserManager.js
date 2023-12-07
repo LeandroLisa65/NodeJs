@@ -1,5 +1,5 @@
 import { userModel } from './models/users.model.js'
-
+import { hashData } from '../../utils/bcrypt.js'
 class UserManager{
     constructor(model){
         this.userModel = model
@@ -61,22 +61,18 @@ class UserManager{
         }
     }
 
-    async updateUser(uid, data){
+    async updateUser(email, password){
         try{
-            return await userModel.findOneAndUpdate(uid, data)
-        }catch (error) {
-            return new Error(error)
-        }
-    }
+            const user = await this.getUserByEmail(email);
 
-    async updateUserDocuments(uid, documentName, documentPath){
-        try{
-            const user = await userModel.findById(uid)
+            if(!user)
+                return null
 
-            if(!user) return new Error('Error finding user')
+            const hashedPassword = await hashData(password);
 
-            const update = { $push: { documents: { name: documentName, reference: documentPath  } } }
-            await userModel.updateOne({ _id: uid }, update)
+            user.password = hashedPassword;
+
+            return await userModel.updateOne({_id:user._id}, user);
         }catch (error) {
             return new Error(error)
         }

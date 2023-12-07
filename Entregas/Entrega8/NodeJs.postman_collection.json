@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "ec2f9f46-c44b-4289-86eb-9dfe0e9df86d",
-		"name": "PrimerEntregaProyectoFinal",
+		"name": "NodeJs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7529746"
 	},
@@ -35,7 +35,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/products?query=hola",
+							"raw": "http://localhost:8080/api/products?query=true&sort=desc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -48,7 +48,11 @@
 							"query": [
 								{
 									"key": "query",
-									"value": "hola"
+									"value": "true"
+								},
+								{
+									"key": "sort",
+									"value": "desc"
 								}
 							]
 						}
@@ -380,6 +384,152 @@
 								"653f9eea7eaf2f44bca2c2f2",
 								"product",
 								"653c2c42346208067f885b32"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Session",
+			"item": [
+				{
+					"name": "getUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/session",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registerUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\" : \"my_name\",\n    \"last_name\" : \"last_name\",\n    \"email\" : \"email@email.com\",\n    \"age\": 50,\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/session/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"session",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"email@email.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/session/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"session",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "current",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1NzEyMjUzNzkzZTQ1N2UxN2Y1YWQ0MyIsImZpcnN0X25hbWUiOiJteV9uYW1lIiwibGFzdF9uYW1lIjoibGFzdF9uYW1lIiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJhZ2UiOjUwLCJwYXNzd29yZCI6IiQyYiQxMCRiU1ZCMDgzc1UvOXN6WGpsT0JSMzdlRHcyQi9QbC53cTJqZnFIRVFZMWI3QXJUZkppbTN5aSIsImNhcnQiOiI2NTcxMjI1Mzc5M2U0NTdlMTdmNWFkNDEiLCJyb2xlIjoiVXNlciIsIl9fdiI6MH0sImlhdCI6MTcwMTkxNjk1OCwiZXhwIjoxNzAxOTE3MjU4fQ.XdqXVCShwUVv1Ky4SxI7ipffPRCaQ3jUU8q2IOLMrUI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/session/current",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"session",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recover",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"email@email.com\",\n    \"password\":\"password2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/session/recover",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"session",
+								"recover"
 							]
 						}
 					},

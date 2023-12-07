@@ -31,8 +31,8 @@ class UserRepository{
         return result
     }
 
-    async update(uid, data){
-        const result = await this.dao.updateUser(uid, data)
+    async update(email, password){
+        const result = await this.dao.updateUser(email, password)
         return result
     }
 

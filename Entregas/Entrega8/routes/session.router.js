@@ -14,9 +14,9 @@ class SessionRouter extends RouterClass {
           }
       })
 
-      this.get('/current', ['PUBLIC'], async (req, res) => {
+      this.get('/current', ['PUBLIC'], authenticateJWT, async (req, res) => {
           try{
-              res.sendSuccess(await userController.current(req, res))
+              res.sendSuccess(userController.current(req, res))
           }catch(error){
               res.sendServerError(error.message)
           }
@@ -38,21 +38,13 @@ class SessionRouter extends RouterClass {
           }
       })
 
-      this.get('/logout', ['PUBLIC'], async (req, res) => {
-          try{
-              res.sendSuccess(await userController.logout(req, res))
-          }catch(error){
-              res.sendServerError(error.message)
-          }
-      })
-
-      this.post('/updatepassword', ['PUBLIC'], async (req, res) => {
-          try{
-              res.sendSuccess(await userController.updatePassword(req, res))
-          }catch(error){
-              res.sendServerError(error.message)
-          }
-      })
+      this.post('/recover', ['PUBLIC'], async (req, res) => {
+        try{
+            res.sendSuccess(await userController.updatePassword(req, res))
+        }catch(error){
+            res.sendServerError(error.message)
+        }
+    });
   }
 }
 

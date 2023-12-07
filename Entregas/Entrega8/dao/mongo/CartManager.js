@@ -98,9 +98,6 @@ class CartManager {
     {
         try
         {
-            console.log(cid)
-            console.log(pid)
-            console.log(quantity)
             const cart = await cartModel.findOne({_id: cid})
             const index = cart.products.findIndex(product => product.product == pid)
 
@@ -113,7 +110,6 @@ class CartManager {
                 const filter = { _id: cid, 'products.product': pid };
                 const update = { $set: { 'products.$.quantity': quantity } };
                 const aasd = await cartModel.updateOne(filter, update);
-                console.log(aasd)
             }
 
             return `Cart with id ${cid} UPDATED`;

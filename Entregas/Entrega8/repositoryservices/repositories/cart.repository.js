@@ -25,16 +25,11 @@ class CartRepository{
 
     async update(cid, products)
     {
-        console.log(cid)
-        console.log(products)
         const result = await this.dao.updateCart(cid, products)
         return result
     }
 
     async updateQuantity(cid, pid, quantity){
-        console.log(cid)
-        console.log(pid)
-        console.log(quantity)
         const result = await this.dao.updateQuantity(cid, pid, quantity)
         return result
     }
