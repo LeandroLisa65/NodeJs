@@ -1,4 +1,4 @@
-import { cartService, userService, productService } from '../repositoryservices/index.js'
+import { cartService, productService } from '../repositoryservices/index.js'
 class CartController {
     get = async (req, res) => {
         try{

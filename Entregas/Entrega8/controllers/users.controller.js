@@ -1,6 +1,6 @@
 import { userService, cartService } from '../repositoryservices/index.js'
 import { hashData, isValidPassword } from './../utils/bcrypt.js'
-import { generateToken, decodeJWT } from '../utils/jwt.js'
+import { generateToken } from '../utils/jwt.js'
 import CustomError from '../utils/CustomErrors/CustomError.js'
 import EErrors from '../utils/CustomErrors/EErrors.js'
 import { generateUserErrorInfo }from '../utils/CustomErrors/info.js'
