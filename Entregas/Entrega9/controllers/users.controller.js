@@ -87,7 +87,7 @@ class UserController {
                     return {message: 'All fields are required'};
                 console.log('here')
                     await transport.sendMail({
-                        from: 'Recover Password <agustingomezdev@gmail.com>',
+                        from: 'Recover Password',
                         to: email,
                         subject: 'Recover password',
                         html: `
