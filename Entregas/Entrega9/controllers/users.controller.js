@@ -37,7 +37,17 @@ class UserController {
                 cart: await cartService.create()
             }
             let result = await userService.create(newUser)
-
+            await transport.sendMail({
+                from: 'Sign Up',
+                to: email,
+                subject: 'Sign Up',
+                html: `
+                <div>
+                    <h1>Sign Up</h1>
+                    <p>This message is to inform that you have sign up</>
+                </div>
+                `
+            })
             return { result }
         }catch(error){
             next(error)
