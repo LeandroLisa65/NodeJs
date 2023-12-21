@@ -246,7 +246,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"products\":\n    [\n        {\n            \"product\" : \"653c2c42346208067f885b32\"\n            , \"quantity\" : 16\n        },\n        {\n            \"product\" : \"653c0f1bceec21d69cf8ab31\"\n            , \"quantity\" : 6\n        }\n    ]\n}\n",
+							"raw": "{\n    \"products\":\n    [\n        {\n            \"product\" : \"6530972f1638a5f88f58d1e7\"\n            , \"quantity\" : 16\n        },\n        {\n            \"product\" : \"6533485252a08f58e692d634\"\n            , \"quantity\" : 6\n        }\n    ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -254,7 +254,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/carts/653f9eea7eaf2f44bca2c2f2",
+							"raw": "http://localhost:8080/api/carts/657ef103faf6860d0948aa85",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -263,7 +263,7 @@
 							"path": [
 								"api",
 								"carts",
-								"653f9eea7eaf2f44bca2c2f2"
+								"657ef103faf6860d0948aa85"
 							]
 						}
 					},
@@ -284,7 +284,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/carts/653f9eea7eaf2f44bca2c2f2/products/653c0f1bceec21d69cf8ab31",
+							"raw": "http://localhost:8080/api/carts/657ef103faf6860d0948aa85/products/6530972f1638a5f88f58d1e7",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -293,9 +293,9 @@
 							"path": [
 								"api",
 								"carts",
-								"653f9eea7eaf2f44bca2c2f2",
+								"657ef103faf6860d0948aa85",
 								"products",
-								"653c0f1bceec21d69cf8ab31"
+								"6530972f1638a5f88f58d1e7"
 							]
 						}
 					},
@@ -388,6 +388,28 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": ":cid/purchase",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/carts/657ef103faf6860d0948aa85/purchase",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								"657ef103faf6860d0948aa85",
+								"purchase"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -421,7 +443,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\" : \"my_name\",\n    \"last_name\" : \"last_name\",\n    \"email\" : \"email@email.com\",\n    \"age\": 50,\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"first_name\" : \"my_name\",\n    \"last_name\" : \"last_name\",\n    \"email\" : \"email2@email.com\",\n    \"age\": 50,\n    \"password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -478,14 +500,7 @@
 					"name": "current",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1NzEyMjUzNzkzZTQ1N2UxN2Y1YWQ0MyIsImZpcnN0X25hbWUiOiJteV9uYW1lIiwibGFzdF9uYW1lIjoibGFzdF9uYW1lIiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJhZ2UiOjUwLCJwYXNzd29yZCI6IiQyYiQxMCRiU1ZCMDgzc1UvOXN6WGpsT0JSMzdlRHcyQi9QbC53cTJqZnFIRVFZMWI3QXJUZkppbTN5aSIsImNhcnQiOiI2NTcxMjI1Mzc5M2U0NTdlMTdmNWFkNDEiLCJyb2xlIjoiVXNlciIsIl9fdiI6MH0sImlhdCI6MTcwMTkxNjk1OCwiZXhwIjoxNzAxOTE3MjU4fQ.XdqXVCShwUVv1Ky4SxI7ipffPRCaQ3jUU8q2IOLMrUI",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [],
@@ -512,7 +527,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"email@email.com\",\n    \"password\":\"password2\"\n}",
+							"raw": "{\n    \"email\":\"leandro.mlisa@gmail.com\",\n    \"password\":\"password2\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -520,7 +535,31 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/session/recover",
+							"raw": "http://localhost:8090/api/session/recover",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"session",
+								"recover"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/session/logout",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -529,7 +568,7 @@
 							"path": [
 								"api",
 								"session",
-								"recover"
+								"logout"
 							]
 						}
 					},

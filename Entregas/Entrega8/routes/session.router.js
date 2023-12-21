@@ -128,6 +128,15 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
     try {
+        const user = await userManager.getUserByEmail(email)
+
+        if(user)
+        {
+            console.log('error')
+            res.status(400).json({message: 'existing user'})
+            return
+        }
+
       const hashedPassword = await hashData(password);
       const createdUser = await userManager.addUser({
         ...req.body,
@@ -162,7 +171,7 @@ router.post("/signup", async (req, res) => {
       res
         .status(200)
         .cookie("token", token, { httpOnly: true })
-        .json({ message: "Bienvenido", token });
+        .json({ message: "Bienvenido", user, token });
     } catch (error) {
       res.status(500).json({ error });
     }
