@@ -102,15 +102,14 @@ router.get('/login', (req, res) => {
   if(req.session.user)
     return res.redirect('/api/views/products');
 
-  res.render('/login');
+  res.render('login');
 })
 
 router.get('/signup', (req, res) => {
-  //console.log(req)
   if(req.session.user)
-    return res.redirect('/api/views/products');
-  //console.log('chau')
-  res.render('/api/views/signup');
+    return res.redirect('/api/views/profile');
+
+  res.render('signup');
 })
 
 router.get('/profile', (req, res) => {

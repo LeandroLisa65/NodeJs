@@ -7,3 +7,7 @@ export const hashData = async (data) => {
 export const isValidPassword = async (data, hashedData) => {
     return await bcrypt.compare(data, hashedData);
 }
+
+export const compareData = async (data, hashedData) => {
+    return bcrypt.compare(data, hashedData);
+}
