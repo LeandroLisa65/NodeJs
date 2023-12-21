@@ -1,4 +1,4 @@
-import RouterClass from './RouterClass.js'
+/*import RouterClass from './RouterClass.js'
 import userController  from '../controllers/users.controller.js';
 import passport from 'passport'
 
@@ -48,4 +48,66 @@ class SessionRouter extends RouterClass {
   }
 }
 
-export default SessionRouter;
+export default SessionRouter;*/
+
+
+import { Router } from "express";
+import RouterClass from './RouterClass.js'
+import userController  from '../controllers/users.controller.js';
+import passport from 'passport'
+
+//const authenticateJWT = passport.authenticate('current', { session: false });
+const router = Router();
+//class SessionRouter extends RouterClass {
+  //init()
+  //{
+      router.get('/',  async (req, res) => {
+          try{
+              res.sendSuccess(await userController.getUsers(req, res))
+          }catch(error){
+              res.sendServerError(error.message)
+          }
+      })
+
+      router.get('/current',   async (req, res) => {
+          try{
+              res.sendSuccess(userController.current(req, res))
+          }catch(error){
+              res.sendServerError(error.message)
+          }
+      })
+
+      router.post('/signup',  async (req, res, next) => {
+          try{
+            const result = await userController.register(req, res, next)
+            console.log(result)
+            if(result)
+              res.sendSuccess(result)
+            else
+            {
+            res.send('existing user')
+            }
+          }catch(error){
+              // errorHandler
+          }
+      })
+
+      router.post('/login',  async (req, res) => {
+          try{
+              res.sendSuccess(await userController.login(req, res))
+          }catch(error){
+              res.sendServerError(error.message)
+          }
+      })
+
+      router.post('/recover',  async (req, res) => {
+        try{
+            res.sendSuccess(await userController.updatePassword(req, res))
+        }catch(error){
+            res.sendServerError(error.message)
+        }
+    });
+  //}
+//}
+
+export default router;

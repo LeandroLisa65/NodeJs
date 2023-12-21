@@ -1,8 +1,6 @@
 import EErrors from '../utils/CustomErrors/EErrors.js'
 
 function errorHandler(error, req, res, next){
-    console.log('errorhandler')
-    console.log(error)
     switch (error.code) {
         case EErrors.INVALID_TYPE_ERROR: 
             res.status(400).send({status: "error", error: error});

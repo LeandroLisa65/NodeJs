@@ -5,15 +5,15 @@ import CustomError from '../utils/CustomErrors/CustomError.js'
 import EErrors from '../utils/CustomErrors/EErrors.js'
 import { generateUserErrorInfo }from '../utils/CustomErrors/info.js'
 import UserDto from './../dto/user.dto.js'
+import transport from '../utils/nodemailer.js'
 
 class UserController {
     register = async(req, res, next) => {
         try{
-            //console.log('register')
+
             const { first_name, last_name, email, password, age } = req.body
 
             if(!first_name || !last_name || !email){
-                console.log('error creation')
                 CustomError.createError({
                     name: 'User error',
                     cause: generateUserErrorInfo({first_name, last_name, email}),
@@ -23,16 +23,9 @@ class UserController {
             }
 
             const user = await userService.getByEmail(email)
-            console.log('user')
-            console.log(user)
-            if(user) 
-            {
-                console.log('aqui')
-                return;
-            }
-console.log('before hasg')
+            if(user) return 'A user already exists with that email' 
+
             const hashedPassword = await hashData(password)
-            console.log('after hash')
             console.log(hashedPassword)
             console.log(password)
             const newUser = {
@@ -44,11 +37,9 @@ console.log('before hasg')
                 cart: await cartService.create()
             }
             let result = await userService.create(newUser)
-            console.log('result')
-            //console.log(result)
-            return result
+
+            return { result }
         }catch(error){
-            console.log(error)
             next(error)
         }
     }
@@ -67,8 +58,7 @@ console.log('before hasg')
                         code: EErrors.INVALID_TYPE_ERROR
                     })
                 }
-                console.log(userDB.password)
-                console.log(password)
+
                 if(!(await isValidPassword(password, userDB.password))) return res.send({status: 'error', message: 'Your user password does not match the entered password'})
 
                 const token = generateToken(userDB)
@@ -85,9 +75,8 @@ console.log('before hasg')
 
     current = (req, res, next) => {
         const user = req.user;
-        console.log('user' + user);
-    
-        return user
+        const { first_name, last_name, email, role, age, cart } = new UserDto(user)
+        return { first_name, last_name, email, role, age, cart }
     }
 
     updatePassword = async(req, res, next) => {
@@ -96,6 +85,18 @@ console.log('before hasg')
             try{
                 if(!email || !password)
                     return {message: 'All fields are required'};
+                console.log('here')
+                    await transport.sendMail({
+                        from: 'Recover Password',
+                        to: email,
+                        subject: 'Recover password',
+                        html: `
+                        <div>
+                            <h1>Recover your password</h1>
+                            <p>This message is to inform that you have changed your password</>
+                        </div>
+                        `
+                    })
 
                 return await userService.update(email, password)
             }catch(error){
@@ -113,6 +114,15 @@ console.log('before hasg')
             return usersMapped
         }catch(error){
             throw error
+        }
+    }
+
+    logout = (req, res, next)=>{
+        if(req.cookies[process.env.JWT_COOKIE_KEY]){
+            res.clearCookie(process.env.JWT_COOKIE_KEY)
+            return 'Succesfully logged out'
+        }else{
+            return 'No user logged in'
         }
     }
 }
