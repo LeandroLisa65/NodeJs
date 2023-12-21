@@ -2,8 +2,6 @@ import express from 'express';
 import { __dirname } from './dirname.js';
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
-import { chatManager } from './dao/mongo/ChatManager.js';
-import invalidPathHandler from "./middlewares/errorPathHandler.js";
 import "./config/configDB.js";
 import session from 'express-session'
 import MongoStore from 'connect-mongo';
@@ -40,7 +38,6 @@ app.use(mainRouter)
 
 //middlewares
 app.use(errorHandler)
-app.use(invalidPathHandler);
 
 // ---- Sockets
 import socketProduct from './utils/socketProducts.js'
