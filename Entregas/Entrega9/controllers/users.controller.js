@@ -95,18 +95,18 @@ class UserController {
             try{
                 if(!email || !password)
                     return {message: 'All fields are required'};
-                console.log('here')
-                    await transport.sendMail({
-                        from: 'Recover Password',
-                        to: email,
-                        subject: 'Recover password',
-                        html: `
-                        <div>
-                            <h1>Recover your password</h1>
-                            <p>This message is to inform that you have changed your password</>
-                        </div>
-                        `
-                    })
+
+                await transport.sendMail({
+                    from: 'Recover Password',
+                    to: email,
+                    subject: 'Recover password',
+                    html: `
+                    <div>
+                        <h1>Recover your password</h1>
+                        <p>This message is to inform that you have changed your password</>
+                    </div>
+                    `
+                })
 
                 return await userService.update(email, password)
             }catch(error){

@@ -18,6 +18,10 @@ mainRouter.use('/api/carts', cartRouter.getRouter())
 mainRouter.use('/api/session', sessionRouter.getRouter());
 mainRouter.use('/api/views', viewsRouter.getRouter())
 
+mainRouter.use('/', (req, res) => {
+    res.redirect('/api/views/login');
+  });
+
 mainRouter.use(errorHandler)
 
 export default mainRouter
