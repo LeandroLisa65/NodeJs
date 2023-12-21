@@ -1,7 +1,4 @@
 import express from 'express';
-import viewsRouter from "./routes/views.router.js";
-import usersRouter from "./routes/users.router.js";
-import clientsRouter from "./routes/clients.router.js";
 import { __dirname } from './dirname.js';
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
@@ -40,13 +37,6 @@ app.set("view engine", "handlebars");
 
 //routes
 app.use(mainRouter)
-app.use("/api/views", viewsRouter);
-app.use("/api/users", usersRouter);
-app.use("/api/clients", clientsRouter);
-
-app.use('/', (req, res) => {
-  res.redirect('/api/views/login');
-});
 
 //middlewares
 app.use(errorHandler)
