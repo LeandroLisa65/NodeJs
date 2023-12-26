@@ -1,0 +1,23 @@
+<form action="/api/users/{{user._id}}/documents" method="POST" enctype="multipart/form-data">
+    <fieldset class="flex flex-col my-3">
+        <label for="identification">Upload your identification:</label>
+        <input type="file" name="identification">
+    </fieldset>
+
+    <fieldset class="flex flex-col my-3">
+        <label for="addressProof">Upload your address proof:</label>
+        <input type="file" name="addressProof">
+    </fieldset class="flex flex-col my-3">
+
+    <fieldset class="flex flex-col my-3">
+        <label for="accountStatement">Upload your account statement:</label>
+        <input type="file" name="accountStatement">
+    </fieldset>
+
+    <fieldset class="flex flex-col my-3">
+        <label for="profile">Upload your profile image:</label>
+        <input type="file" name="profile">
+    </fieldset>
+
+    <input type="submit" value="Upload" class="mt-3 bg-gray-700 hover:bg-gray-500 text-white font-medium uppercase py-2 px-4 rounded cursor-pointer">
+</form>
