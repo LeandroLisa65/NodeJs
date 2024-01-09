@@ -1,7 +1,6 @@
 const socketClient = io();
 
 socketClient.on('welcome', (message) => {
-    console.log(message);
     alert(message);
 })
 
