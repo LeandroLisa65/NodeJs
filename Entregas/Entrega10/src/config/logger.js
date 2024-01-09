@@ -3,7 +3,8 @@ import program from '../utils/commander.js'
 import dotenv from 'dotenv'
 
 const { mode } = program.opts()
-
+console.log('mode del program')
+console.log(mode)
 dotenv.config({path: './.env'})
 dotenv.config({
     path: mode === 'development' ? './.env.development': './.env.production' 
@@ -69,7 +70,15 @@ const prodLogger = winston.createLogger({
 })
 
 const addLogger = (req, res, next) => {
-    req.logger = devLogger;
+    switch (mode) {
+        case 'production':
+            req.logger = prodLogger
+            break;
+        case 'development':
+            req.logger = devLogger
+        default:
+            break;
+    }
     req.logger.http(`${req.method} in ${req.url} - at ${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}`);
     next();
 }

@@ -16,7 +16,6 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const user = await manager.getUserById(+id);
-    console.log("user", user);
     if (!user) {
       return res
         .status(404)

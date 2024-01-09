@@ -1,24 +1,15 @@
-// ---- Server
 import { __dirname } from './dirname.js';
 import express from 'express'
 import { mongoInstance } from './config/objectConfig.js'
 import { addLogger, logger } from './config/logger.js'
 import cors from 'cors'
-
-// ---- Socketio
 import { Server } from 'socket.io'
 import { socketProduct } from './utils/socketProducts.js'
 import { socketChat } from './utils/socketChat.js'
-
-// ---- Router
 import mainRouter from './routes/index.js'
-
-// ---- Handlebars
 import handlebars from 'express-handlebars'
-
-// ---- Passport
 import passport from 'passport'
-import { initPassport, initPassportGoogle } from './config/passport.config.js'
+import { initPassport } from './config/passport.config.js'
 import cookieParser from 'cookie-parser'
 
 const app = express()
@@ -49,7 +40,6 @@ app.use(cors({
 }))
 
 initPassport()
-initPassportGoogle()
 app.use(passport.initialize())
 
 app.use(mainRouter)

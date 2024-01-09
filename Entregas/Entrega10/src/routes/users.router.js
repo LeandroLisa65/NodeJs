@@ -81,18 +81,6 @@ class SessionRouter extends RouterClass {
             }
         })
 
-        this.get('/google', ['PUBLIC'],authenticateGithub, async (req, res)=>{})
-
-        this.get('/googlecallback', ['PUBLIC'], authenticateGithub,  async (req, res) => {
-            try{
-                const user = req.user
-                const token = generateToken(user)
-                res.cookie(process.env.JWT_COOKIE_KEY, token, {maxAge: 3600000, httpOnly: false, sameSite: 'none', secure: true})
-                res.redirect('/products')
-            }catch(error){
-                res.sendServerError(error.message)
-            }
-        })
     }
 }
 

@@ -1,5 +1,5 @@
 import UserDto from '../dto/user.dto.js'
-import { userService, cartService } from './../service/index.js'
+import { userService, cartService } from '../repositories/index.js'
 import { createHash, isValidPassword } from '../utils/bcrypt.js'
 import { generateToken, generateTokenResetPassword, decodeJWT } from '../utils/jwt.js'
 import CustomError from '../utils/CustomErrors/CustomError.js'
@@ -11,8 +11,6 @@ import lastConnection from '../utils/lastConnection.js'
 class UserController {
     register = async(req, res, next) => {
         try{
-            console.log('hola')
-            console.log(req.body)
             const { first_name, last_name, email, password, age } = req.body
 
             if(!first_name || !last_name || !email){
@@ -29,7 +27,6 @@ class UserController {
 
             const hashedPassword = await createHash(password)
             const currentAge = parseInt(age)
-            console.log(currentAge)
             const newUser = {
                 first_name,
                 last_name,
@@ -39,10 +36,8 @@ class UserController {
                 role: 'user',
                 cart: await cartService.create()
             }
-            console.log('aqui')
-            console.log(newUser)
             let result = await userService.create(newUser)
-            console.log(result)
+            console.debug(result)
             await transport.sendMail({
                 from: 'Sign Up',
                 to: email,

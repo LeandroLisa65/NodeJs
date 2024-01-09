@@ -6,19 +6,15 @@ const path = "UsersFile.json";
 class UsersManager {
   async getUsers(queryObj = {}) {
     const { limit } = queryObj;
-    console.log("limit", limit);
     try {
       if (existsSync(path)) {
         const usersFile = await promises.readFile(path, "utf-8");
-        console.log("usersFile", usersFile);
         const usersData = JSON.parse(usersFile);
         return limit ? usersData.slice(0, +limit) : usersData;
       } else {
-        console.log("no existe el archivo");
         return [];
       }
     } catch (error) {
-      console.log("error", error);
       return error;
     }
   }
@@ -48,12 +44,9 @@ class UsersManager {
   async getUserById(id) {
     try {
       const users = await this.getUsers();
-      console.log("users", users);
       const user = users.find((u) => u.id === id);
-      console.log("user", user);
       return user;
     } catch (error) {
-      console.log("error catch");
       throw new Error(error.message);
     }
   }
@@ -130,18 +123,5 @@ const user5 = {
   course: "BACKEND",
   password: "abcde",
 };
-// async function test() {
-//   const manager = new UsersManager();
-//   await manager.createUser(user1);
-//   await manager.createUser(user2);
-//   await manager.createUser(user3);
-//   await manager.createUser(user4);
-//   await manager.createUser(user5);
-//   //const users = await manager.getUsers()
-//   //console.log(users);
-//   //await manager.deleteUser(1)
-// }
-
-// test();
 
 export const manager = new UsersManager();

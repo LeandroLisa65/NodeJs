@@ -1,4 +1,4 @@
-import { cartService, userService, productService, ticketService } from './../service/index.js'
+import { cartService, userService, productService, ticketService } from '../repositories/index.js'
 import transport from '../utils/nodemailer.js'
 
 class CartController {

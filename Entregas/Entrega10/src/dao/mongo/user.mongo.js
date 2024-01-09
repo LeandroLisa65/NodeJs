@@ -55,7 +55,7 @@ class UserManagerMongo{
 
     async addUser(user){
         try{
-            console.log(user)
+            console.debug(user)
             return await userModel.create(user)
         }catch (error) {
             return new Error(error)

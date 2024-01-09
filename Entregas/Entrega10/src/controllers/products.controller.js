@@ -1,4 +1,4 @@
-import { productService } from './../service/index.js'
+import { productService } from '../repositories/index.js'
 import  CustomError from '../utils/CustomErrors/CustomError.js'
 import EErrors from '../utils/CustomErrors/EErrors.js'
 import { generateProductErrorInfo } from '../utils/CustomErrors/info.js'

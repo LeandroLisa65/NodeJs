@@ -21,7 +21,6 @@ mainRouter.use('/mockingproducts', (req, res, next) => {
     res.send(mockingProducts())
 })
 
-// ---- Winston logger
 mainRouter.use('/loggerTest', (req, res, next) => {
     req.logger.fatal('testing fatal log')
     req.logger.error('testing error log')
