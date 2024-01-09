@@ -122,9 +122,14 @@ class UserController {
                 `
             })
 
-            logger.warning('Password changed!!')
-            logger.debug('The password has been changed!!')
 
+            logger.debug('The password has been changed!!')
+            logger.http('Password changed!!')
+            logger.info('Password changed!!')
+            logger.warning('Password changed!!')
+            logger.error('Password changed!!')
+            logger.fatal('Password changed!!')
+            
             return await userService.update(email, password)
         }catch(error){
             throw error
