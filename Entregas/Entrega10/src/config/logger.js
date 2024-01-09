@@ -3,8 +3,6 @@ import program from '../utils/commander.js'
 import dotenv from 'dotenv'
 
 const { mode } = program.opts()
-console.log('mode del program')
-console.log(mode)
 dotenv.config({path: './.env'})
 dotenv.config({
     path: mode === 'development' ? './.env.development': './.env.production' 
@@ -76,6 +74,7 @@ const addLogger = (req, res, next) => {
             break;
         case 'development':
             req.logger = devLogger
+            break;
         default:
             break;
     }

@@ -1,3 +1,4 @@
+import { logger } from '../config/logger.js'
 import { productService } from '../repositories/index.js'
 import  CustomError from '../utils/CustomErrors/CustomError.js'
 import EErrors from '../utils/CustomErrors/EErrors.js'
@@ -45,13 +46,13 @@ class ProductController {
             const products = await productService.get(query, options)
             const { docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage } = products
 
-            if(query.status !== undefined){ // if query.status exists
+            if(query.status !== undefined){
                 hasPrevPage === false ? prevLink = null : prevLink = `/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
                 hasNextPage === false ? nextLink = null : nextLink = `/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}&query=${query.status}`
-            }else if(query.category !== undefined){ // if query.category exists
+            }else if(query.category !== undefined){
                 hasPrevPage === false ? prevLink = null : prevLink = `/products/${query.category}?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
                 hasNextPage === false ? nextLink = null : nextLink = `/products/${query.category}?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
-            }else{ // if there isn't query values
+            }else{
                 hasPrevPage === false ? prevLink = null : prevLink = `/products?page=${parseInt(prevPage)}&limit=${options.limit}&sort=${req.query.sort}`
                 hasNextPage === false ? nextLink = null : nextLink = `/products?page=${parseInt(nextPage)}&limit=${options.limit}&sort=${req.query.sort}`
             }
