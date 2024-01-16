@@ -1,8 +1,6 @@
 import passport from 'passport'
 import RouterClass from './RouterClass.js'
 import userController from '../controllers/users.controller.js'
-import { generateToken } from '../utils/jwt.js'
-import uploader from '../utils/multer.js'
  
 const authenticateJWT = passport.authenticate('current', { session: false });
 const authenticateGithub = passport.authenticate('github', { session: false })

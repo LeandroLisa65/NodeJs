@@ -1,65 +1,64 @@
-<h1 class="font-bold text-6xl text-gray-700 text-center uppercase my-5">Real time products</h1>
-<h1 class="font-semibold text-4xl text-gray-700 text-center uppercase">Add new product</h1>
-<a class="my-3 block text-center font-medium text-lg text-white uppercase bg-gray-700 hover:bg-gray-500 py-2 px-4 rounded cursor-pointer" href="https://tokytech.vercel.app">Go back to home page</a>
+<h1>Real time products</h1>
+<h1>Add new product</h1>
+<a bloc href="https://tokytech.vercel.app">Go back to home page</a>
 
-<form class="flex flex-col" id="form">
-    <label for="title" class="mb-2 text-sm font-medium text-gray-900">Title: </label>
+<form id="form">
+    <label for="title">Title: </label>
     <input 
         placeholder="Ex: CeraVe Retinol Serum for Post-Acne Marks and Skin Texture"
         type="text"
         id="title"
-        class="bg-gray-50 border border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-gray-400 focus:border-gray-400 p-2.5 focus:outline-none">
+       >
     
-    <label for="description" class="mb-2 text-sm font-medium text-gray-900">Description: </label>
+    <label for="description">Description: </label>
     <input
         placeholder="Describe the product"
         type="text"
         id="description" 
-        class="bg-gray-50 border border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-gray-400 focus:border-gray-400 p-2.5 focus:outline-none">
+       >
     
-    <label for="price" class="mb-2 text-sm font-medium text-gray-900">Price: </label>
+    <label for="price">Price: </label>
     <input
         placeholder="Ex: 250"
         type="text"
         id="price"
-        class="bg-gray-50 border border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-gray-400 focus:border-gray-400 p-2.5 focus:outline-none">
+       >
     
-    <label for="code" class="mb-2 text-sm font-medium text-gray-900">Code: </label>
+    <label for="code">Code: </label>
     <input
         placeholder="Ex: S73036S"
         type="text"
         id="code"
-        class="bg-gray-50 border border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-gray-400 focus:border-gray-400 p-2.5 focus:outline-none">
+       >
     
-    <label for="stock" class="mb-2 text-sm font-medium text-gray-900">Stock: </label>
+    <label for="stock">Stock: </label>
     <input
         placeholder="Ex: 82"
         type="number"
         id="stock"
-        class="bg-gray-50 border border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-gray-400 focus:border-gray-400 p-2.5 focus:outline-none">
+       >
     
-    <label for="category" class="mb-2 text-sm font-medium text-gray-900">Category: </label>
+    <label for="category">Category: </label>
     <input
         placeholder="Ex: beauty-and-personal-care"
         type="text"
         id="category"
-        class="bg-gray-50 border border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-gray-400 focus:border-gray-400 p-2.5 focus:outline-none">
+       >
     
-    <label for="thumbnails" class="mb-2 text-sm font-medium text-gray-900">Thumbnails: </label>
+    <label for="thumbnails">Thumbnails: </label>
     <textarea
         id="thumbnails"
         placeholder="Ex: https://m.media-amazon.com/images/I/71tzcOuInxL._SY450_.jpg, https://m.media-amazon.com/images/I/71azn9vqWAL._SY450_.jpg, https://m.media-amazon.com/images/I/61de1cvsXxL._SY450_.jpg, https://m.media-amazon.com/images/I/81uWcHMIWLL._SY450_.jpg, https://m.media-amazon.com/images/I/81VUOlSPmLL._SY450_.jpg, https://m.media-amazon.com/images/I/81oifbpSA4L._SY450_.jpg"
-        class="bg-gray-50 border border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-gray-400 focus:border-gray-400 p-2.5 focus:outline-none resize-none"></textarea>
+       ></textarea>
 
-    <input type="submit" value="Send" class="mt-3 bg-gray-700 hover:bg-gray-500 text-white font-medium uppercase py-2 px-4 rounded cursor-pointer">
+    <input type="submit" value="Send">
 </form>
 
 <div>
-    <h1 class="font-semibold text-4xl text-gray-700 text-center uppercase my-5">Products</h1>
-    <ul id="products" class="mt-4">
+    <h1>Products</h1>
+    <ul id="products">
 
     </ul>
 </div>
-<script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/realTimeProducts.js"></script>

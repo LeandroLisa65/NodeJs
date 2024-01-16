@@ -1,6 +1,6 @@
 import productController from '../controllers/products.controller.js'
 import cartController from '../controllers/carts.controller.js'
-import { authToken, authTokenResetPassword } from '../utils/jwt.js'
+import { authToken } from '../utils/jwt.js'
 import RouterClass from './RouterClass.js'
 
 

@@ -1,21 +1,10 @@
-# Base image
-FROM node:20.8.0-alpine3.17
-
-# Directory where the project is saved
-WORKDIR /app
-
-# Copy the package.json file
-COPY package*.json ./src/app.js ./
-
-# Execute the command to install dependencies
-RUN npm config set strict-ssl false --global
-RUN npm install -g npm@10.3.0
-
-# Copy all the code
+FROM node:lts-alpine
+ENV NODE_ENV=production
+WORKDIR /usr/src/app
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+RUN npm install
 COPY . .
-
-# The port to expose in our container
-EXPOSE 8081
-
-# Execute the command to start the app
-CMD [ "npm", "start"]
+EXPOSE 8080
+RUN chown -R node /usr/src/app
+USER node
+CMD ["npm", "start"]

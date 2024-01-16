@@ -8,8 +8,21 @@
             "name": "Node js",
             "program": "${file}",
             "request": "launch",
-            "skipFiles": ["<node_internals>/**"],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
             "type": "node"
+        },
+        {
+            "name": "Docker Node.js Launch",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: debug",
+            "platform": "node",
+            "node": {
+                "package": "${workspaceFolder}/Entregas/Entrega10/package.json",
+                "localRoot": "${workspaceFolder}/Entregas/Entrega10"
+            }
         }
     ]
 }

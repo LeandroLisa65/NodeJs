@@ -1,11 +1,11 @@
 <div>
     {{#if session}}
-    <div class="flex justify-between items-center">
-        <p class="font-semibold text-xl text-gray-700 my-2">Welcome {{session.first_name}} {{session.last_name}} {{session.date_of_birth}}, email: {{session.email}}, role: {{session.role}}</p>
-        <a href="/api/users/logout" class="my-2 bg-gray-700 hover:bg-gray-500 text-white font-medium uppercase py-1 px-2 rounded cursor-pointer">Logout</a>
+    <div>
+        <p >Welcome {{session.first_name}} {{session.last_name}} {{session.date_of_birth}}, email: {{session.email}}, role: {{session.role}}</p>
+        <a href="/api/users/logout" >Logout</a>
     </div>
     {{/if}}
-    <h1 class="font-semibold text-4xl text-gray-700 text-center uppercase my-5">Products</h1>
+    <h1 >Products</h1>
 </div>
 {{#if payload}}
     <table role="grid" style="margin-right: 30px; margin-left: 30px; width:96%">
@@ -83,7 +83,7 @@
         </div>
     </div>
 {{else}}
-    <div class="flex flex-col justify-center items-center gap-2">
+    <div>
         <hr>
         {{#if message}}
             <h3>ERROR: {{message}}</h3>
@@ -94,5 +94,4 @@
     </div>
 {{/if}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
 <script src="/static/js/products.js"></script>
