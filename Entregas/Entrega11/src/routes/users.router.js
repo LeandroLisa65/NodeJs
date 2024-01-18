@@ -47,7 +47,15 @@ class SessionRouter extends RouterClass {
             }
         })
 
-        this.post('/recover', ['PUBLIC'], async (req, res) => {
+        this.post('/updatepassword', ['PUBLIC'], async (req, res) => {
+            try{
+                res.sendSuccess(await userController.updatePassword(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
+
+        this.post('/recoverpassword', ['PUBLIC'], async (req, res) => {
             try{
                 res.sendSuccess(await userController.recoverPassword(req, res))
             }catch(error){
@@ -55,14 +63,13 @@ class SessionRouter extends RouterClass {
             }
         })
 
-        this.delete('/', ['ADMIN'], authenticateJWT, async (req, res) => {
+        this.get('/premium/:uid', ['USER', 'PREMIUM'], async (req, res) => {
             try{
-                res.sendSuccess(await userController.inactiveUsers(req, res))
+                res.sendSuccess(await userController.premiumUser(req, res)) 
             }catch(error){
                 res.sendServerError(error.message)
             }
         })
-
     }
 }
 

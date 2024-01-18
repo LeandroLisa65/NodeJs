@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import jwt from 'jsonwebtoken'
-
+import { logger } from '../config/logger.js'
 class RouterClass {
     constructor(){
         this.router = Router()
@@ -33,9 +33,10 @@ class RouterClass {
     }
 
     handlePolicies = policies => (req, res, next) => {
-        if(policies[0]==='PUBLIC') return next()
+        if(policies.includes('PUBLIC')) return next()
 
         const authCookie = req.headers.cookie
+
         if(!authCookie) return res.send({status: 'error', error: 'User not authenticated or missing token.'})
 
         const token =  authCookie.split('=')[1];

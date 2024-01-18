@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['admin', 'user', 'premium'],
         default: 'user'
-    }
+    },
 })
 
 const productModel = mongoose.model(collection, userSchema)

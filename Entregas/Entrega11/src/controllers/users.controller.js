@@ -1,7 +1,7 @@
 import UserDto from '../dto/user.dto.js'
 import { userService, cartService } from '../repositories/index.js'
 import { createHash, isValidPassword } from '../utils/bcrypt.js'
-import { generateToken } from '../utils/jwt.js'
+import { generateToken, generateTokenResetPassword, decodeJWT } from '../utils/jwt.js'
 import CustomError from '../utils/CustomErrors/CustomError.js'
 import EErrors from '../utils/CustomErrors/EErrors.js'
 import { generateUserErrorInfo } from '../utils/CustomErrors/info.js'
@@ -97,40 +97,7 @@ class UserController {
         logger.warning({ first_name, last_name, email, role, date_of_birth, cart, _id, last_connection, documents })
         return {first_name, last_name, email, role, date_of_birth, cart, _id, last_connection, documents }
     }
-
-    recoverPassword = async(req, res, next) => {
-        const {email, password} = req.body;
-        
-        try{
-            if(!email || !password)
-                return {message: 'All fields are required'};
-
-            await transport.sendMail({
-                from: 'Recover Password',
-                to: email,
-                subject: 'Recover password',
-                html: `
-                <div>
-                    <h1>Recover your password</h1>
-                    <p>This message is to inform that you have changed your password</>
-                </div>
-                `
-            })
-
-
-            logger.debug('The password has been changed!!')
-            logger.http('Password changed!!')
-            logger.info('Password changed!!')
-            logger.warning('Password changed!!')
-            logger.error('Password changed!!')
-            logger.fatal('Password changed!!')
-            
-            return await userService.update(email, password)
-        }catch(error){
-            throw error
-        }
-    }
-
+   
     getUsers = async(req, res, next) => {
         try{
             const users = await userService.get()
@@ -143,6 +110,83 @@ class UserController {
             throw error
         }
     }
+
+    recoverPassword = async(req, res, next) => {
+        const { email } = req.body
+    
+        const userDB = await userService.getByEmail(email)
+            try{
+                if(!userDB){
+                    CustomError.createError({
+                        name: 'Could not find user',
+                        cause: null,
+                        message: 'Error trying to find a user with the email: ' + email,
+                        code: EErrors.INVALID_TYPE_ERROR
+                    })
+                }
+    
+                const token = generateTokenResetPassword(userDB)
+
+                let result = await transport.sendMail({
+                    from: 'Recover Password',
+                    to: email,
+                    subject: 'Recover password',
+                    html: `
+                    <div>
+                        <h1>Recover your password</h1>
+                        <a href="http://localhost:${process.env.PORT}/updatepassword/${token}">Click me to recover your password</a>
+                        <p>This link to reset your password is only valid for 1 hour</>
+                    </div>
+                    `
+                })
+            }catch(error){
+                throw error
+            }
+    }
+
+    premiumUser = async(req, res, next) => {
+        const { uid } = req.params
+
+        const userDB = await userService.getById(uid)
+        try{
+            if(!userDB)
+                CustomError.createError({
+                    name: 'Could not find user',
+                    cause: null,
+                    message: 'Error trying to find a user with the id: ' + uid,
+                    code: EErrors.INVALID_TYPE_ERROR
+            })
+
+            let newRole = ''
+            userDB.role === 'user' ? newRole = 'premium' : newRole = 'user'
+
+            await userService.update({_id: uid}, {role: newRole})
+
+            const result = await userService.getById(uid)
+            return result
+        }catch(error){
+            throw error
+        }
+    }
+
+    updatePassword = async(req, res, next) => {
+        const { token, password } = req.body
+
+        try{
+            console.log(token)
+            console.log(password)
+            const user = decodeJWT(token, process.env.JWT_RESET_PASSWORD_KEY)
+
+            if(isValidPassword(user.user, password) == true)
+                res.send({status: 'error', message: "You can't enter the same password you had before"})
+
+            const hashedPassword = createHash(password)
+            let result = await userService.update({_id: user.user._id}, {password: hashedPassword})
+            return result
+        }catch(error){
+            throw error
+        }
+}
 }
 
 export default new UserController()
