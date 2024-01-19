@@ -23,7 +23,8 @@ class ProductManagerMongo {
 
     async addProduct(product){
         try{
-            return await productModel.create(product)
+            const result = await productModel.create(product)
+            return result
         }catch(err){
             return new Error(err)
         }

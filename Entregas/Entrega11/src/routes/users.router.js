@@ -7,7 +7,7 @@ const authenticateGithub = passport.authenticate('github', { session: false })
 
 class SessionRouter extends RouterClass {
     init(){
-        this.get('/', ['ADMIN'], authenticateJWT, async (req, res) => {
+        this.get('/', ['PUBLIC'], authenticateJWT, async (req, res) => {
             try{
                 res.sendSuccess(await userController.getUsers(req, res))
             }catch(error){

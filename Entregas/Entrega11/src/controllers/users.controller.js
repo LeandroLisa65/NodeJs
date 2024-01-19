@@ -92,18 +92,18 @@ class UserController {
     current = (req, res, next) => {
         const user = req.user;
         
-        const { first_name, last_name, email, role, date_of_birth, cart, _id, last_connection, documents } = new UserDto(user)
+        const { first_name, last_name, email, role, date_of_birth, cart, _id } = new UserDto(user)
         logger.warning('Showing data of the customer:')
-        logger.warning({ first_name, last_name, email, role, date_of_birth, cart, _id, last_connection, documents })
-        return {first_name, last_name, email, role, date_of_birth, cart, _id, last_connection, documents }
+        logger.warning({ first_name, last_name, email, role, date_of_birth, cart, _id })
+        return {first_name, last_name, email, role, date_of_birth, cart, _id }
     }
    
     getUsers = async(req, res, next) => {
         try{
             const users = await userService.get()
             const usersMapped = users.map((user) => {
-                const { first_name, last_name, email, role } = new UserDto(user)
-                return { first_name, last_name, email, role }
+                const { first_name, last_name, email, role, _id } = new UserDto(user)
+                return { first_name, last_name, email, role, _id }
             })
             return usersMapped
         }catch(error){
@@ -173,8 +173,6 @@ class UserController {
         const { token, password } = req.body
 
         try{
-            console.log(token)
-            console.log(password)
             const user = decodeJWT(token, process.env.JWT_RESET_PASSWORD_KEY)
 
             if(isValidPassword(user.user, password) == true)
@@ -182,6 +180,7 @@ class UserController {
 
             const hashedPassword = createHash(password)
             let result = await userService.update({_id: user.user._id}, {password: hashedPassword})
+
             return result
         }catch(error){
             throw error

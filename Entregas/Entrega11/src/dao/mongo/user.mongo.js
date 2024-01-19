@@ -70,19 +70,6 @@ class UserManagerMongo{
         }
     }
 
-    async updateUserDocuments(uid, documentName, documentPath){
-        try{
-            const user = await userModel.findById(uid)
-
-            if(!user) return new Error('Error finding user')
-
-            const update = { $push: { documents: { name: documentName, reference: documentPath  } } }
-            await userModel.updateOne({ _id: uid }, update)
-        }catch (error) {
-            return new Error(error)
-        }
-    }
-
     async deleteUser(uid){
         try{
             return await userModel.findOneAndDelete({_id: uid})

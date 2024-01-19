@@ -3,6 +3,15 @@ import cartController from '../controllers/carts.controller.js'
 
 class CartRouter extends RouterClass {
     init(){
+        this.get('/', ['PUBLIC'], async (req, res) => {
+            try {
+                const payload = await cartController.get(req, res)
+                res.sendSuccess(payload)
+            } catch (error) {
+                res.sendServerError(error.message)
+            }
+        })
+
         this.get('/:cid', ['PUBLIC'], async (req, res) => {
             try{
                 const payload = await cartController.getById(req, res)

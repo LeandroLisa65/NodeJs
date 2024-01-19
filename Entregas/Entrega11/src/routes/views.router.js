@@ -36,7 +36,7 @@ class ViewRouter extends RouterClass {
             res.render('recoverpassword', {})
         })
 
-        this.get('/updatepassword/:token', ['PUBLIC'], async (req, res) => {
+        this.get('/updatepassword/:token', ['PUBLIC'],authTokenResetPassword, async (req, res) => {
             res.render('updatePassword', {token: req.params.token})    
         })
 

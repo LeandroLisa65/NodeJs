@@ -98,7 +98,7 @@ class ProductController {
             const product = req.body
 
             if(req.user.user.role === 'premium' && req.user.user.email !== product.owner){
-                res.send({status: 'error', message: "You can't update products you don't own"})
+                res.send({status: 'error', message: "You can't update products you have not created"})
             }
 
             const updatedProduct = await productService.update(req.params.pid, product)
@@ -113,7 +113,7 @@ class ProductController {
             const product = await productService.getById(req.params.pid)
 
             if(req.user.user.role === 'premium' && req.user.user.email !== product.owner){
-                res.send({status: 'error', message: "You can't delete products you don't own"})
+                res.send({status: 'error', message: "You can't delete products you have not created!!"})
             }
 
             const deletedProduct = await productService.delete(req.params.pid)
