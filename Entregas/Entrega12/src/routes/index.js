@@ -5,6 +5,8 @@ import ViewRouter from './views.router.js'
 import UsersRouter from './users.router.js'
 import { mockingProducts } from '../utils/mockingProducts.js'
 import errorHandler from '../middlewares/errors.js'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
 
 const productRouter = new ProductRouter()
 const cartRouter = new CartRouter()
@@ -31,9 +33,22 @@ mainRouter.use('/loggerTest', (req, res, next) => {
     res.send('Logger')
 })
 
-/*mainRouter.use('*', (req, res, next) => {
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'Documentation of NodeJs',
+            description: 'This is the documentation of Coderhouse backend course.'
+        }
+    },
+    apis: [`./docs/**/*.yaml`]
+}
+const specs = swaggerJSDoc(swaggerOptions)
+mainRouter.use('/api/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
+mainRouter.use('*', (req, res, next) => {
     res.status(404).send({status: "error", error: 'Requested path not found',});
-})*/
+})
 
 mainRouter.use(errorHandler)
 
