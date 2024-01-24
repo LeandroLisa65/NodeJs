@@ -60,7 +60,6 @@ class CartRouter extends RouterClass {
                 res.sendServerError(error.message)
             }
         })
-
         
         this.delete('/:cid', ['PUBLIC'], async (req, res) => {
             try{
