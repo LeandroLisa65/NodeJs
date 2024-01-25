@@ -146,14 +146,10 @@ components:
           type: string
           description: Product owner, it can be 'admin' or a user email
       example:
-        _id: ObjectId('64611d8c7f508f9cd4ae73b2')
-        title: Apple AirPods Pro
-        description: The Apple-designed H2 chip pushes advanced audio performance even further, resulting in smarter noise cancellation and more immersive sound.
-        thumbnails: ["https://m.media-amazon.com/images/I/61f1YfTkTDL._AC_SL1500_.jpg",
-                    "https://m.media-amazon.com/images/I/617I3mDGmTL._AC_SL1500_.jpg",
-                    "https://m.media-amazon.com/images/I/51OoKCakCfL._AC_SL1500_.jpg",
-                    "https://m.media-amazon.com/images/I/51lEdIxlNDL._AC_SL1500_.jpg",
-                    "https://m.media-amazon.com/images/I/517i7g9q7zL._AC_SL1500_.jpg"]
+        _id: ObjectId('64611d8c7f614f9cd4ae73b2')
+        title: Dell
+        description: Dell description.
+        thumbnails: []
         category: electronics
         price: 35
         stock: 65
@@ -194,13 +190,9 @@ components:
           type: string
           description: Product owner, it can be 'admin' or a user email
       example:
-        title: Apple AirPods Pro
-        description: The Apple-designed H2 chip pushes advanced audio performance even further, resulting in smarter noise cancellation and more immersive sound.
-        thumbnails: ["https://m.media-amazon.com/images/I/61f1YfTkTDL._AC_SL1500_.jpg",
-                    "https://m.media-amazon.com/images/I/617I3mDGmTL._AC_SL1500_.jpg",
-                    "https://m.media-amazon.com/images/I/51OoKCakCfL._AC_SL1500_.jpg",
-                    "https://m.media-amazon.com/images/I/51lEdIxlNDL._AC_SL1500_.jpg",
-                    "https://m.media-amazon.com/images/I/517i7g9q7zL._AC_SL1500_.jpg"]
+        title: Mac M2
+        description: Mac description.
+        thumbnails: []
         category: electronics
         price: 35
         stock: 65

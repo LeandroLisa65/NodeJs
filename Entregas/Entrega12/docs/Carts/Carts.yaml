@@ -226,14 +226,9 @@ components:
             product: {
                     owner: admin,
                     _id: 645e5df41a4b57a9cf70c5cc,
-                    title: Seagate Portable 2TB External Hard Drive HDD,
-                    description: Easily store and access 2TB to content on the go with the Seagate Portable Drive, a USB external hard drive,
-                    thumbnails: [
-                        "https://m.media-amazon.com/images/I/81tjLksKixL.__AC_SY445_SX342_QL70_FMwebp_.jpg",
-                        "https://m.media-amazon.com/images/I/91QqR55XhQL._AC_SX679_.jpg",
-                        "https://m.media-amazon.com/images/I/91rx2KE8YGL._AC_SX679_.jpg",
-                        "https://m.media-amazon.com/images/I/918-cGeMaRL._AC_SX679_.jpg"
-                    ],
+                    title: Dell,
+                    description: Dell descriprion.,
+                    thumbnails: [],
                     category: electronics,
                     price: 62,
                     stock: 37,
@@ -248,17 +243,10 @@ components:
                 product: {
                     owner: admin,
                     _id: 645e5e421a4b57a9cf70c5d0,
-                    title: Baby Playmat Kick & Play Piano,
-                    description: Infant activity gym with 4 ways to play as your baby grows from newborn to toddler featuring Amazon-exclusive Navy Fawn fashion,
-                    thumbnails: [
-                        "https://m.media-amazon.com/images/I/71lbET+ulpL._AC_SX679_.jpg",
-                        "https://m.media-amazon.com/images/I/815EI4HlZPL._AC_SX679_.jpg",
-                        "https://m.media-amazon.com/images/I/818wmGRHMUL._AC_SX679_.jpg",
-                        "https://m.media-amazon.com/images/I/81-xJpiy33L._AC_SX679_.jpg",
-                        "https://m.media-amazon.com/images/I/71bjnIJCvtL._AC_SX679_.jpg",
-                        "https://m.media-amazon.com/images/I/81rRMHjkHTL._AC_SX679_.jpg"
-                    ],
-                    category: baby,
+                    title: Mac M2,
+                    description: Mac M2 description.,
+                    thumbnails: [],
+                    category: electronics,
                     price: 47,
                     stock: 61,
                     status: true,
