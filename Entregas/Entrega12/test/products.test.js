@@ -6,9 +6,9 @@ import productModel from '../src/dao/mongo/models/product.model.js';
 import { expect } from 'chai'
 
 mongoose.connect(process.env.MONGO)
-let productsDao;
 
 describe('Products testing', () => {
+    let productsDao;
     describe('DAO Testing', () => {
         before(() => {
             productsDao = new ProductManagerMongo(productModel)

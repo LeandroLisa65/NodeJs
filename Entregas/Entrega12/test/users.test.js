@@ -5,13 +5,10 @@ import UserDao from './../src/dao/mongo/user.mongo.js'
 import UserModel from './../src/dao/mongo/models/user.model.js'
 import { expect } from 'chai'
 
-import supertest from 'supertest'
-const requester = supertest('http://localhost:8080')
-
 mongoose.connect(process.env.MONGO)
-let usersDao = new UserDao(UserModel)
 
 describe('Users testing', () => {
+    let usersDao
     describe('DAO Testing', () => {
         before(() => {
             usersDao = new UserDao(UserModel)

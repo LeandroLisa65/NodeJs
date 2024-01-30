@@ -5,12 +5,10 @@ import CartDao from './../src/dao/mongo/cart.mongo.js'
 import CartsModel from './../src/dao/mongo/models/cart.model.js'
 import { expect } from 'chai'
 
-import supertest from 'supertest'
-const requester = supertest('http://localhost:8080')
-
 mongoose.connect(process.env.MONGO)
-let cartsDao;
+
 describe('Carts testing', () => {
+    let cartsDao;
     describe('DAO Testing', () => {
         before(() => {
             cartsDao = new CartDao(CartsModel)
