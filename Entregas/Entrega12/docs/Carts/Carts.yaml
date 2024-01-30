@@ -27,12 +27,6 @@ paths:
         description: Cart id to get
         schema:
           type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/requestBodies/CartObject'
       responses:
         "200":
           description: Cart was fetched successfully

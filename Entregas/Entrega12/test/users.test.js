@@ -9,12 +9,15 @@ import supertest from 'supertest'
 const requester = supertest('http://localhost:8080')
 
 mongoose.connect(process.env.MONGO)
-const usersDao = new UserDao(UserModel)
+let usersDao = new UserDao(UserModel)
 
 describe('Users testing', () => {
     describe('DAO Testing', () => {
+        before(() => {
+            usersDao = new UserDao(UserModel)
+        })
         it('The dao must be able to obtain a user by id from the database', async () => {
-            const result = await usersDao.getUserById('649c563f2e3e507554085663')
+            const result = await usersDao.getUserByEmail('email@email.com')
             expect(result).to.have.property('_id')
             expect(result).to.have.property('email')
         }).timeout(5000)

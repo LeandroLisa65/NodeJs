@@ -9,9 +9,12 @@ import supertest from 'supertest'
 const requester = supertest('http://localhost:8080')
 
 mongoose.connect(process.env.MONGO)
-const cartsDao = new CartDao(CartsModel)
+let cartsDao;
 describe('Carts testing', () => {
     describe('DAO Testing', () => {
+        before(() => {
+            cartsDao = new CartDao(CartsModel)
+        })
         it('The dao must be able to create a cart', async () => {
             const result = await cartsDao.createCart()
             expect(result).to.have.property('_id')
