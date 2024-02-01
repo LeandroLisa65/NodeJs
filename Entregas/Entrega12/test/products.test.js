@@ -4,8 +4,11 @@ import mongoose from 'mongoose'
 import ProductManagerMongo from './../src/dao/mongo/product.mongo.js'
 import productModel from '../src/dao/mongo/models/product.model.js';
 import { expect } from 'chai'
+import supertest from 'supertest'
 
 mongoose.connect(process.env.MONGO)
+
+const requester = supertest('http://localhost:8080')
 
 describe('Products testing', () => {
     let productsDao;
@@ -61,6 +64,21 @@ describe('Products testing', () => {
             const resultDelete = await productsDao.deleteProduct(result._id)
             expect(resultDelete).to.be.an('object')
             expect(resultDelete).to.have.property('deletedCount')
+        })
+    })
+    describe('Router testing', async () => {
+        it('The GET endpoint must fetch products from the database correctly', async () => {
+            const res = await requester.get(`/api/products/`)
+            expect(res.statusCode).to.equal(200)
+            expect(res.body).to.have.property('payload')
+            expect(res.body.payload.products).to.be.an('array')
+        })
+        it('The GET by id endpoint must fetch a product from the database correctly', async () => {
+            const pid = '65a9d5db9cd7cc164a2f3b9a'
+            const res = await requester.get(`/api/products/${pid}`)
+            expect(res.statusCode).to.equal(200)
+            expect(res.body.payload.product).to.have.property('_id')
+            expect(res.body.payload.product._id).to.equal(pid)
         })
     })
 })
