@@ -10,6 +10,15 @@ mongoose.connect(process.env.MONGO)
 
 const requester = supertest('http://localhost:8080')
 
+const getCookie = (res) => {
+    let cookie = {
+        name: res.headers['set-cookie'][0].split('=')[0],
+        value: res.headers['set-cookie'][0].split('=')[1].split(';')[0]
+    }
+
+    return cookie;
+}
+
 describe('Users testing', () => {
     let usersDao
     describe('DAO Testing', () => {
@@ -77,6 +86,21 @@ describe('Users testing', () => {
             
             const resLogout = await requester.get('/api/users/logout')
             expect(resLogout.statusCode).to.equal(200)
+        }).timeout(5000)
+        it('The POST login endpoint must log in with a user account correctly and then logout', async () => {
+            const login =   {
+                email: "email@email.com",
+                password: "password"
+            }
+            
+            const res = await requester.post(`/api/users/login`).send(login)
+            expect(res.statusCode).to.equal(200)
+            expect(res._body.payload).to.have.property('access_token')
+            
+            let cookie = getCookie(res)
+
+            const response = await requester.get('/api/users/current').set('Cookie',[`${cookie.name}=${cookie.value}`])
+            expect(response.statusCode).to.equal(200)
         }).timeout(5000)
     })
 })
