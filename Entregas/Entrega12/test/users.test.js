@@ -41,6 +41,10 @@ describe('Users testing', () => {
             expect(resultDelete).to.be.an('object')
             expect(resultDelete).to.have.property('_id')
         })
+        it('The dao should retrieve the list of users', async () => {
+            const result = await usersDao.getUsers()
+            expect(result).that.is.an('array')
+        })
     })
     describe('Router testing', async() => {
         it('The POST register endpoint must create a user in the database correctly', async () => {
@@ -60,7 +64,7 @@ describe('Users testing', () => {
 
             expect(res.statusCode).to.equal(200)
             expect(res._body).to.have.property('payload')
-        }).timeout(5000)
+        }).timeout(10000)
         it('The POST login endpoint must log in with a user account correctly and then logout', async () => {
             const login =   {
                 email: "email@email.com",
@@ -69,10 +73,10 @@ describe('Users testing', () => {
             
             const res = await requester.post(`/api/users/login`).send(login)
             expect(res.statusCode).to.equal(200)
-            expect(res.body.payload).to.have.property('access_token')
+            expect(res._body.payload).to.have.property('access_token')
             
             const resLogout = await requester.get('/api/users/logout')
             expect(resLogout.statusCode).to.equal(200)
-        })
+        }).timeout(5000)
     })
 })

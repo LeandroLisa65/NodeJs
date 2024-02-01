@@ -25,21 +25,21 @@ describe('Carts testing', () => {
         it('The POST endpoint must create a cart in the database correctly', async () => {
             const res = await requester.post(`/api/carts/`)
             expect(res.statusCode).to.equal(200)
-            expect(res.body).to.have.property('payload')
-            expect(res.body.payload).to.have.property('createdCart')
-            expect(res.body.payload.createdCart).to.have.property('products')
+            expect(res._body).to.have.property('payload')
+            expect(res._body.payload).to.have.property('createdCart')
+            expect(res._body.payload.createdCart).to.have.property('products')
         }).timeout(10000)
         it('The GET endpoint must fetch carts from the database correctly', async () => {
             const res = await requester.get(`/api/carts/`)
             expect(res.statusCode).to.equal(200)
-            expect(res.body).to.have.property('payload')
-            expect(res.body.payload).to.be.an('array')
+            expect(res._body).to.have.property('payload')
+            expect(res._body.payload).to.be.an('array')
         })
         it('The GET by id endpoint must fetch a cart from the database correctly', async () => {
             const cid = '65a9d25107756156100640d6'
             const res = await requester.get(`/api/carts/${cid}`)
             expect(res.statusCode).to.equal(200)
-            expect(res.body.payload.products).to.be.an('array')
+            expect(res._body.payload.products).to.be.an('array')
         })
         it('The PUT endpoint must update the quantity of a product in the cart correctly', async () => {
             const cid = '65a9d25107756156100640d6'
