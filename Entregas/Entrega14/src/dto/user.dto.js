@@ -8,6 +8,8 @@ class UserDto{
         this.password = user.password
         this.cart = user.cart
         this.role = user.role
+        this.last_connection = user.last_connection
+        this.documents = user.documents
     }
 }
 

@@ -1,23 +1,17 @@
-<form action="/api/users/{{user._id}}/documents" method="POST" enctype="multipart/form-data">
-    <fieldset >
-        <label for="identification">Upload your identification:</label>
-        <input type="file" name="identification">
-    </fieldset>
+<form action="/api/users/{{user._id}}/documents" method="POST" enctype="multipart/form-data" class="container" style="width: 30%; margin-top:2%">
+    <label for="identification">Upload your identification:</label>
+    <input type="file" name="identification">
 
-    <fieldset >
-        <label for="addressProof">Upload your address proof:</label>
-        <input type="file" name="addressProof">
-    </fieldset >
+    <label for="addressProof">Upload your address proof:</label>
+    <input type="file" name="addressProof">
 
-    <fieldset >
-        <label for="accountStatement">Upload your account statement:</label>
-        <input type="file" name="accountStatement">
-    </fieldset>
+    <label for="accountStatement">Upload your account statement:</label>
+    <input type="file" name="accountStatement">
 
-    <fieldset >
-        <label for="profile">Upload your profile image:</label>
-        <input type="file" name="profile">
-    </fieldset>
+    <label for="profile">Upload your profile image:</label>
+    <input type="file" name="profile">
 
     <input type="submit" value="Upload" >
 </form>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">

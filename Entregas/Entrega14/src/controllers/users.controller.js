@@ -6,7 +6,7 @@ import CustomError from '../utils/CustomErrors/CustomError.js'
 import EErrors from '../utils/CustomErrors/EErrors.js'
 import { generateUserErrorInfo } from '../utils/CustomErrors/info.js'
 import transport from '../utils/nodemailer.js'
-import { logger } from '../config/logger.js'
+
 class UserController {
     register = async(req, res, next) => {
         try{
@@ -35,8 +35,9 @@ class UserController {
                 role: 'user',
                 cart: await cartService.create()
             }
+
             let result = await userService.create(newUser)
-            console.debug(result)
+
             await transport.sendMail({
                 from: 'Sign Up',
                 to: email,
@@ -92,18 +93,16 @@ class UserController {
     current = (req, res, next) => {
         const user = req.user;
         
-        const { first_name, last_name, email, role, date_of_birth, cart, _id } = new UserDto(user)
-        logger.warning('Showing data of the customer:')
-        logger.warning({ first_name, last_name, email, role, date_of_birth, cart, _id })
-        return {first_name, last_name, email, role, date_of_birth, cart, _id }
+        const { first_name, last_name, email, role, date_of_birth, cart, _id, last_connection, documents } = new UserDto(user)
+        return {first_name, last_name, email, role, date_of_birth, cart, _id, last_connection, documents }
     }
    
     getUsers = async(req, res, next) => {
         try{
             const users = await userService.get()
             const usersMapped = users.map((user) => {
-                const { first_name, last_name, email, role, _id } = new UserDto(user)
-                return { first_name, last_name, email, role, _id }
+                const { first_name, last_name, email, role, _id, last_connection, documents } = new UserDto(user)
+                return { first_name, last_name, email, role, _id, last_connection, documents }
             })
             return usersMapped
         }catch(error){
@@ -157,6 +156,20 @@ class UserController {
                     code: EErrors.INVALID_TYPE_ERROR
             })
 
+            if(userDB.role === 'user'){
+                const requiredDocuments = ['identification', 'addressProof', 'accountStatement']
+                const hasAllDocuments = requiredDocuments.every(docName => userDB.documents.some(doc => doc.name === docName))
+    
+                if(!hasAllDocuments){
+                    CustomError.createError({
+                        name: 'Could not upgrade user to premium',
+                        cause: null,
+                        message: 'User must upload all required documents before upgrading',
+                        code: EErrors.INVALID_TYPE_ERROR
+                    })
+                }
+            }
+
             let newRole = ''
             userDB.role === 'user' ? newRole = 'premium' : newRole = 'user'
 
@@ -185,7 +198,38 @@ class UserController {
         }catch(error){
             throw error
         }
-}
+    }
+
+    uploadDocument = async(req, res, next) => {
+        try{
+            const user = req.params.uid
+            const uploadedFiles = req.files
+
+            if(uploadedFiles['identification']){
+                const identificationFile = uploadedFiles['identification'][0]
+                await userService.updateDocuments(user, identificationFile.fieldname, identificationFile.path)
+            } 
+            
+            if(uploadedFiles['addressProof']){
+                const addressProofFile = uploadedFiles['addressProof'][0];
+                await userService.updateDocuments(user, addressProofFile.fieldname, addressProofFile.path)
+            } 
+            
+            if(uploadedFiles['accountStatement']){
+                const accountStatementFile = uploadedFiles['accountStatement'][0];
+                await userService.updateDocuments(user, accountStatementFile.fieldname, accountStatementFile.path)
+            } 
+
+            if(uploadedFiles['profile']){
+                const profileFile = uploadedFiles['profile'][0];
+                await userService.updateDocuments(user, profileFile.fieldname, profileFile.path)
+            } 
+
+            return 'Files uploaded successfully'
+        }catch(error){
+            throw error
+        }
+    }
 }
 
 export default new UserController()

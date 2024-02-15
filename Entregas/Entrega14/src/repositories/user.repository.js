@@ -46,8 +46,8 @@ class UserRepository{
         return result
     }
     
-    async getInactiveUsers(option){
-        const result = await this.dao.getInactiveUsers(option)
+    async updateDocuments(uid, documentName, documentPath){
+        const result = await this.dao.updateUserDocuments(uid, documentName, documentPath)
         return result
     }
 }
