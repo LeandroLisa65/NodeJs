@@ -92,7 +92,8 @@ class UserManagerMongo{
 
     async getInactiveUsers(option){
         try{
-            return await userModel.find(option)
+            console.log(option)
+            return await userModel.find(option).exec()
         }catch(error){
             return new Error(error)
         }

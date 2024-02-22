@@ -2,6 +2,7 @@ import UserDto from '../dto/user.dto.js'
 import { userService, cartService } from '../repositories/index.js'
 import { createHash, isValidPassword } from '../utils/bcrypt.js'
 import { generateToken, generateTokenResetPassword, decodeJWT } from '../utils/jwt.js'
+import lastConnection from '../utils/lastConnection.js'
 import CustomError from '../utils/CustomErrors/CustomError.js'
 import EErrors from '../utils/CustomErrors/EErrors.js'
 import { generateUserErrorInfo } from '../utils/CustomErrors/info.js'
@@ -83,6 +84,9 @@ class UserController {
 
     logout = (req, res, next)=>{
         if(req.cookies[process.env.JWT_COOKIE_KEY]){
+            const token = req.cookies[process.env.JWT_COOKIE_KEY]
+            const user = decodeJWT(token, process.env.JWT_KEY)
+            lastConnection(user.user._id)
             res.clearCookie(process.env.JWT_COOKIE_KEY)
             return 'Succesfully logged out'
         }else{
@@ -233,9 +237,10 @@ class UserController {
 
     inactiveUsers = async(req, res, next) => {
         try{
-            const option = { last_connection: { $lt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) } } // 2 days
+            const option = { last_connection: { $lt: new Date(Date.now() - 4 * 60 * 60 * 1000) } } // 30 minutes
+            console.log(option)
             const inactiveUsers = await userService.getInactiveUsers(option)
-            
+            console.log(inactiveUsers)
             const deletedUsers = []
             inactiveUsers.map(async (user) => {
                 deletedUsers.push(user.email)
