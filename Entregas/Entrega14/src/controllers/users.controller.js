@@ -238,9 +238,7 @@ class UserController {
     inactiveUsers = async(req, res, next) => {
         try{
             const option = { last_connection: { $lt: new Date(Date.now() - 4 * 60 * 60 * 1000) } } // 30 minutes
-            console.log(option)
             const inactiveUsers = await userService.getInactiveUsers(option)
-            console.log(inactiveUsers)
             const deletedUsers = []
             inactiveUsers.map(async (user) => {
                 deletedUsers.push(user.email)

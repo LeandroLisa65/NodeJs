@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ec2f9f46-c44b-4289-86eb-9dfe0e9df86d",
+		"_postman_id": "8437d8b0-5f5a-4b79-98ca-ecb9f5b92b43",
 		"name": "NodeJs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7529746"
@@ -172,7 +172,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"6533485552a08f58e692d637\",\n    \"description\": \"6533485552a08f58e692d637\",\n    \"price\": 30,\n    \"thumbnail\": \"image\",\n    \"code\": \"4\",\n    \"stock\": 100,\n    \"category\": \"category\",\n    \"status\": true\n}",
+							"raw": "{\n    \"title\": \"t\",\n    \"description\": \"d\",\n    \"price\": 30,\n    \"thumbnails\": [\"image\"],\n    \"code\": \"4\",\n    \"stock\": 100,\n    \"category\": \"category\",\n    \"status\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -372,7 +372,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/carts/653f9eea7eaf2f44bca2c2f2/product/653c2c42346208067f885b32",
+							"raw": "http://localhost:8080/api/carts/653f9eea7eaf2f44bca2c2f2/products/65a9c6b5afaa43b9c001ba29",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -382,8 +382,8 @@
 								"api",
 								"carts",
 								"653f9eea7eaf2f44bca2c2f2",
-								"product",
-								"653c2c42346208067f885b32"
+								"products",
+								"65a9c6b5afaa43b9c001ba29"
 							]
 						}
 					},
@@ -422,7 +422,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/session",
+							"raw": "http://localhost:8080/api/users",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -430,7 +430,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"session"
+								"users"
 							]
 						}
 					},
@@ -443,7 +443,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\" : \"my_name\",\n    \"last_name\" : \"last_name\",\n    \"email\" : \"email2@email.com\",\n    \"age\": 50,\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"first_name\" : \"my_name\",\n    \"last_name\" : \"last_name\",\n    \"email\" : \"email@email.com\",\n    \"age\": 50,\n    \"password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -451,7 +451,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/session/register",
+							"raw": "http://localhost:8080/api/users/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -459,7 +459,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"session",
+								"users",
 								"register"
 							]
 						}
@@ -473,7 +473,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\" : \"email@email.com\",\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"email\" : \"leandro.mlisa@gmail.com\",\n    \"password\": \"p\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -481,7 +481,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/session/login",
+							"raw": "http://localhost:8080/api/users/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -489,7 +489,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"session",
+								"users",
 								"login"
 							]
 						}
@@ -505,7 +505,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/session/current",
+							"raw": "http://localhost:8080/api/users/current",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -513,38 +513,8 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"session",
+								"users",
 								"current"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "recover",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\":\"leandro.mlisa@gmail.com\",\n    \"password\":\"password2\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8090/api/session/recover",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8090",
-							"path": [
-								"api",
-								"session",
-								"recover"
 							]
 						}
 					},
@@ -559,7 +529,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/session/logout",
+							"raw": "http://localhost:8080/api/users/logout",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -567,8 +537,51 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"session",
+								"users",
 								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "premium/uid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users/premium/65a9c27d152ceb1b78ec848b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"premium",
+								"65a9c27d152ceb1b78ec848b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteInactiveUsers",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								""
 							]
 						}
 					},
