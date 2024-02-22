@@ -230,6 +230,33 @@ class UserController {
             throw error
         }
     }
+
+    inactiveUsers = async(req, res, next) => {
+        try{
+            const option = { last_connection: { $lt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) } } // 2 days
+            const inactiveUsers = await userService.getInactiveUsers(option)
+            
+            const deletedUsers = []
+            inactiveUsers.map(async (user) => {
+                deletedUsers.push(user.email)
+                await userService.delete(user._id)
+
+                transport.sendMail({
+                    from: 'Account deleted',
+                    to: user.email,
+                    subject: 'Your account has been deleted',
+                    html: `
+                    <div>
+                        <h1>Your account has been deleted due to inactivity in the last 2 days</h1>
+                    </div>
+                    `
+                })
+            })
+            return deletedUsers
+        }catch(error){
+            throw error
+        }
+    }
 }
 
 export default new UserController()

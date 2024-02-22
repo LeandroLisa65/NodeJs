@@ -50,6 +50,11 @@ class UserRepository{
         const result = await this.dao.updateUserDocuments(uid, documentName, documentPath)
         return result
     }
+
+    async getInactiveUsers(option){
+        const result = await this.dao.getInactiveUsers(option)
+        return result
+    }
 }
 
 export default UserRepository

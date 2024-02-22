@@ -85,6 +85,14 @@ class SessionRouter extends RouterClass {
                 res.sendServerError(error.message)
             }
         })
+
+        this.delete('/', ['ADMIN'], authenticateJWT, async (req, res) => {
+            try{
+                res.sendSuccess(await userController.inactiveUsers(req, res))
+            }catch(error){
+                res.sendServerError(error.message)
+            }
+        })
     }
 }
 

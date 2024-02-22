@@ -89,6 +89,14 @@ class UserManagerMongo{
             return new Error(error)
         }
     }
+
+    async getInactiveUsers(option){
+        try{
+            return await userModel.find(option)
+        }catch(error){
+            return new Error(error)
+        }
+    }
 }
 
 export default UserManagerMongo
