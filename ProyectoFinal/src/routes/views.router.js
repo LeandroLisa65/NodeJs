@@ -15,7 +15,6 @@ class ViewRouter extends RouterClass {
 
         this.get('/products', ['PUBLIC'], authToken, async (req, res) => {
            try{
-                console.debug('products')
                 const result = await productController.get(req, res)
                 const { products, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink, session  } = result
                 res.render('products', {status: 'success', payload: products, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink, session })
