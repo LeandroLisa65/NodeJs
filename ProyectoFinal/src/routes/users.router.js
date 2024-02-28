@@ -79,7 +79,6 @@ class SessionRouter extends RouterClass {
             { name: 'profile', maxCount: 1 }
         ]), async (req, res) => {
             try{
-                console.log('llegó')
                 res.sendSuccess(await userController.uploadDocument(req, res))
             }catch(error){
                 res.sendServerError(error.message)
